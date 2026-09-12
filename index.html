@@ -80,11 +80,12 @@ h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
 .marque{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
 .sigle{
   width:38px;height:38px;border-radius:11px;flex-shrink:0;
-  background:linear-gradient(145deg,var(--teal),var(--teal-sombre));
-  display:grid;place-items:center;
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:#052028;
-  box-shadow:0 6px 18px -6px rgba(80,220,205,.6);
+  object-fit:cover;display:block;
+  border:1.5px solid var(--bord-vif);
+  box-shadow:0 6px 18px -8px rgba(80,220,205,.55);
+  transition:border-color .22s,transform .22s cubic-bezier(.2,.8,.3,1);
 }
+.marque:hover .sigle{border-color:var(--teal);transform:scale(1.04)}
 .marque-txt{line-height:1.15}
 .marque-nom{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;letter-spacing:-.01em}
 .marque-sous{font-size:11.5px;color:var(--texte-3)}
@@ -548,7 +549,7 @@ h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
 <header class="entete" id="entete">
   <div class="entete-inner">
     <a href="index.html" class="marque">
-      <div class="sigle">LD</div>
+      <img class="sigle" src="logo-dimeh.png" alt="Logo LA DÉLIRANCE" width="38" height="38">
       <div class="marque-txt">
         <div class="marque-nom">LA DÉLIRANCE</div>
         <div class="marque-sous">Serveur Discord</div>
@@ -560,7 +561,7 @@ h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
     <nav class="nav" id="nav">
       <a href="classement.html">Classement</a>
       <a href="reseaux.html">Réseaux</a>
-      <a href="#" class="cta">Rejoindre le serveur</a>
+      <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta">Rejoindre le serveur</a>
     </nav>
   </div>
 </header>
@@ -573,7 +574,7 @@ h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
       <h1 class="apparait">Bienvenue chez<br>LA DÉLIRANCE</h1>
       <p class="intro apparait">La communauté de Dimeh. On discute, on se retrouve en vocal, on monte de niveau ensemble. Viens comme tu es, reste pour l'ambiance.</p>
       <div class="actions apparait">
-        <a href="#" class="cta cta-large">Rejoindre le serveur</a>
+        <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta cta-large">Rejoindre le serveur</a>
         <a href="classement.html" class="btn-second">
           Voir le classement
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -685,7 +686,7 @@ h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
     <div class="bandeau apparait">
       <h2>Prêt à nous rejoindre ?</h2>
       <p>L'entrée est libre. Présente-toi, lance une discussion, et commence à gagner de l'XP dès ton premier message.</p>
-      <a href="#" class="cta">Rejoindre LA DÉLIRANCE</a>
+      <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta">Rejoindre LA DÉLIRANCE</a>
     </div>
   </section>
 
