@@ -757,7 +757,7 @@ function enrichir(liste){
     });
 }
 
-const TOUS = enrichir(DONNEES);
+let TOUS = enrichir(DONNEES);  // donnees d'exemple, remplacees par la base au chargement
 
 /* ---------- Rendu ---------- */
 function rendrePodium(trois){
@@ -889,9 +889,45 @@ champ.addEventListener('input', () => {
 });
 
 
+/* ---------- Chargement des vraies donnees ---------- */
+/* Avatar de secours si un membre n'a pas encore ete vu par le bot */
+const avatarDefaut = pseudo =>
+  'https://api.dicebear.com/7.x/thumbs/svg?seed=' + encodeURIComponent(pseudo || 'membre');
+
+async function chargerDepuisLaBase(){
+  const badge = document.querySelector('.fil');
+  try{
+    const reponse = await fetch('/api/classement');
+    if(!reponse.ok) throw new Error('reponse ' + reponse.status);
+    const data = await reponse.json();
+
+    if(!data.membres || !data.membres.length){
+      /* Base vide ou indisponible : on garde les donnees d'exemple deja affichees */
+      if(badge) badge.innerHTML = '<span class="point-vif"></span> En attente de donnees';
+      return;
+    }
+
+    TOUS = enrichir(data.membres.map(m => ({
+      pseudo: m.pseudo,
+      xp: m.xp,
+      avatar: m.avatar || avatarDefaut(m.pseudo)
+    })));
+
+    champ.value = '';
+    afficher(TOUS);
+    statistiques(TOUS);
+    if(badge) badge.innerHTML = '<span class="point-vif"></span> Mis à jour en direct';
+  }catch(e){
+    /* Erreur reseau : les donnees d'exemple restent a l'ecran, le site reste utilisable */
+    console.warn('Classement non charge depuis la base :', e.message);
+    if(badge) badge.innerHTML = '<span class="point-vif"></span> Données d\'exemple';
+  }
+}
+
 /* ---------- Démarrage ---------- */
 afficher(TOUS);
 statistiques(TOUS);
+chargerDepuisLaBase();
 </script>
 </body>
 </html>
