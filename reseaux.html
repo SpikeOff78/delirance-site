@@ -2,558 +2,33 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Les réseaux de Dimeh — LA DÉLIRANCE</title>
-<meta name="description" content="Retrouve Dimeh sur Twitch, Instagram, TikTok, Snapchat et YouTube.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Réseaux de Dimeh — LA DÉLIRANCE</title>
+<meta name="description" content="Retrouve Dimeh sur Twitch, Instagram, TikTok, Snapchat, YouTube et Discord.">
+<meta name="theme-color" content="#07080d">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LA DÉLIRANCE">
+<meta property="og:title" content="Les réseaux de Dimeh">
+<meta property="og:description" content="Suis Dimeh partout : Twitch, Instagram, TikTok, Snapchat et YouTube.">
+<meta property="og:image" content="https://delirance-site.vercel.app/logo-dimeh.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-/* ============ TOKENS ============ */
-:root{
-  --nuit:#061620;
-  --nuit-2:#0a2130;
-  --ardoise:#0f2c3d;
-  --ardoise-clair:#14384b;
-  --bord:rgba(122,190,190,.14);
-  --bord-vif:rgba(80,220,205,.38);
-  --teal:#50dccd;
-  --teal-sombre:#1f8b81;
-  --or:#ffcd3c;
-  --argent:#cfdce0;
-  --bronze:#d08a5c;
-  --texte:#eefaf8;
-  --texte-2:#9dbfc2;
-  --texte-3:#6b8f96;
-  --r-s:10px;
-  --r-m:16px;
-  --r-l:22px;
-  --ombre:0 18px 40px -18px rgba(0,0,0,.75);
-  --ombre-forte:0 26px 60px -20px rgba(0,0,0,.85);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background:var(--nuit);
-  color:var(--texte);
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
-
-/* ============ DECOR DE FOND ============ */
-.atmosphere{position:fixed;inset:0;pointer-events:none;z-index:0}
-.atmosphere::before{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(70% 50% at 50% -10%, rgba(80,220,205,.20), transparent 65%),
-    radial-gradient(50% 40% at 88% 8%, rgba(31,139,129,.16), transparent 70%),
-    radial-gradient(60% 45% at 6% 30%, rgba(31,139,129,.10), transparent 70%);
-}
-.atmosphere::after{
-  content:"";position:absolute;inset:0;opacity:.35;
-  background-image:
-    linear-gradient(rgba(122,190,190,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(122,190,190,.05) 1px,transparent 1px);
-  background-size:64px 64px;
-  mask-image:radial-gradient(72% 55% at 50% 0%,#000,transparent 78%);
-  -webkit-mask-image:radial-gradient(72% 55% at 50% 0%,#000,transparent 78%);
-}
-
-/* ============ HEADER ============ */
-.entete{
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(18px) saturate(1.4);
-  -webkit-backdrop-filter:blur(18px) saturate(1.4);
-  background:rgba(6,22,32,.72);
-  border-bottom:1px solid transparent;
-  transition:border-color .3s ease,background .3s ease;
-}
-.entete.ancree{border-bottom-color:var(--bord);background:rgba(6,22,32,.88)}
-.entete-inner{
-  max-width:1080px;margin:0 auto;
-  padding:14px clamp(16px,4vw,32px);
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
-}
-.marque{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.sigle{
-  width:38px;height:38px;border-radius:11px;flex-shrink:0;
-  object-fit:cover;display:block;
-  border:1.5px solid var(--bord-vif);
-  box-shadow:0 6px 18px -8px rgba(80,220,205,.55);
-  transition:border-color .22s,transform .22s cubic-bezier(.2,.8,.3,1);
-}
-.marque:hover .sigle{border-color:var(--teal);transform:scale(1.04)}
-.marque-txt{line-height:1.15}
-.marque-nom{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;letter-spacing:-.01em}
-.marque-sous{font-size:11.5px;color:var(--texte-3)}
-
-.nav{display:flex;align-items:center;gap:4px}
-.nav a{
-  color:var(--texte-2);text-decoration:none;font-size:14px;font-weight:500;
-  padding:8px 14px;border-radius:var(--r-s);transition:color .2s,background .2s;
-}
-.nav a:hover{color:var(--texte);background:rgba(80,220,205,.09)}
-.nav a:focus-visible,.cta:focus-visible,.recherche input:focus-visible,.burger:focus-visible{
-  outline:2px solid var(--teal);outline-offset:3px;
-}
-.cta{
-  margin-left:8px;
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(145deg,var(--teal),var(--teal-sombre));
-  color:#04222a;font-weight:600;font-size:14px;
-  padding:9px 18px;border-radius:var(--r-s);text-decoration:none;
-  box-shadow:0 8px 22px -10px rgba(80,220,205,.75);
-  transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .18s,filter .18s;
-}
-.cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(80,220,205,.9);filter:brightness(1.06)}
-.cta:active{transform:translateY(0)}
-
-.burger{
-  display:none;background:none;border:1px solid var(--bord);
-  border-radius:var(--r-s);padding:9px;cursor:pointer;
-}
-.burger span{display:block;width:18px;height:2px;background:var(--texte);border-radius:2px;transition:transform .25s,opacity .2s}
-.burger span+span{margin-top:4px}
-.burger.ouvert span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.burger.ouvert span:nth-child(2){opacity:0}
-.burger.ouvert span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-
-/* ============ LAYOUT ============ */
-.page{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,32px) 100px}
-
-/* ============ HERO ============ */
-.hero{padding:clamp(48px,9vw,96px) 0 clamp(32px,5vw,48px)}
-.fil{
-  display:inline-flex;align-items:center;gap:9px;
-  font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--teal);
-  background:rgba(80,220,205,.09);border:1px solid var(--bord-vif);
-  padding:6px 13px;border-radius:100px;margin-bottom:22px;
-}
-.point-vif{
-  width:6px;height:6px;border-radius:50%;background:var(--teal);
-  animation:pulse 2.4s ease-out infinite;
-}
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(80,220,205,.5)}
-  70%{box-shadow:0 0 0 9px rgba(80,220,205,0)}
-  100%{box-shadow:0 0 0 0 rgba(80,220,205,0)}
-}
-.hero h1{
-  font-size:clamp(44px,9.5vw,86px);font-weight:700;line-height:.92;letter-spacing:-.035em;
-  background:linear-gradient(170deg,#ffffff 20%,#8fe4da 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.hero p{color:var(--texte-2);margin-top:20px;max-width:56ch;font-size:16.5px;line-height:1.65}
-
-.stats{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
-  margin-top:clamp(32px,5vw,44px);
-}
-.stat{
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-m);
-  padding:18px 20px;position:relative;overflow:hidden;
-  transition:transform .25s cubic-bezier(.2,.8,.3,1),border-color .25s;
-}
-.stat::before{
-  content:"";position:absolute;top:0;left:18px;right:18px;height:1px;
-  background:linear-gradient(90deg,transparent,var(--bord-vif),transparent);
-}
-.stat:hover{transform:translateY(-3px);border-color:var(--bord-vif)}
-.stat-val{font-size:clamp(24px,4.2vw,32px);font-weight:700;letter-spacing:-.02em;line-height:1}
-.stat-lib{font-size:12.5px;color:var(--texte-3);margin-top:7px}
-
-/* ============ BARRE OUTILS ============ */
-.outils{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  margin:clamp(40px,6vw,60px) 0 22px;flex-wrap:wrap;
-}
-.titre-section{display:flex;align-items:baseline;gap:12px}
-.titre-section h2{font-size:22px;font-weight:600;letter-spacing:-.02em}
-.compteur{font-size:13px;color:var(--texte-3)}
-.recherche{position:relative;flex:1;max-width:280px;min-width:190px}
-.recherche input{
-  width:100%;background:var(--nuit-2);color:var(--texte);
-  border:1px solid var(--bord);border-radius:var(--r-s);
-  padding:10px 14px 10px 38px;font-size:14px;font-family:inherit;
-  transition:border-color .2s,background .2s;
-}
-.recherche input::placeholder{color:var(--texte-3)}
-.recherche input:focus{border-color:var(--bord-vif);background:var(--ardoise);outline:none}
-.recherche svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);stroke:var(--texte-3)}
-
-/* ============ PODIUM ============ */
-.podium{
-  display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:clamp(10px,2vw,18px);
-  align-items:end;margin-bottom:clamp(28px,4vw,40px);
-}
-.marche{
-  position:relative;border-radius:var(--r-l);padding:22px 16px 20px;text-align:center;
-  background:linear-gradient(170deg,var(--ardoise-clair),var(--nuit-2));
-  border:1px solid var(--bord);
-  box-shadow:var(--ombre);
-  transition:transform .3s cubic-bezier(.2,.8,.3,1),box-shadow .3s,border-color .3s;
-}
-.marche:hover{transform:translateY(-5px);box-shadow:var(--ombre-forte)}
-.marche.or{
-  padding-top:34px;padding-bottom:30px;
-  border-color:rgba(255,205,60,.4);
-  background:linear-gradient(170deg,#1b4a4a,#0d2b38);
-}
-.marche.or::after{
-  content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(120% 60% at 50% 0%,rgba(255,205,60,.22),transparent 62%);
-}
-.marche.argent{border-color:rgba(207,220,224,.3)}
-.marche.bronze{border-color:rgba(208,138,92,.32)}
-.medaille{
-  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
-  width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#06202a;
-  border:3px solid var(--nuit);z-index:2;
-}
-.or .medaille{background:var(--or)}
-.argent .medaille{background:var(--argent)}
-.bronze .medaille{background:var(--bronze)}
-.couronne{
-  position:absolute;top:-30px;left:50%;transform:translateX(-50%);
-  font-size:26px;filter:drop-shadow(0 3px 10px rgba(255,205,60,.55));
-  animation:flotte 3.4s ease-in-out infinite;z-index:2;
-}
-@keyframes flotte{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
-.marche .portrait{position:relative;display:inline-block;margin-bottom:12px}
-.marche .portrait img{
-  border-radius:50%;object-fit:cover;display:block;
-  width:64px;height:64px;border:2.5px solid var(--bord);
-}
-.or .portrait img{width:84px;height:84px;border-color:var(--or)}
-.argent .portrait img{border-color:var(--argent)}
-.bronze .portrait img{border-color:var(--bronze)}
-.marche .pseudo{
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15.5px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.or .pseudo{font-size:19px}
-.marche .niv{font-size:12.5px;color:var(--texte-3);margin-top:3px}
-.marche .xp{
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;
-  color:var(--teal);margin-top:9px;
-}
-.or .xp{font-size:20px;color:var(--or)}
-.socle{height:6px;border-radius:0 0 var(--r-l) var(--r-l);margin:16px -16px -20px}
-.or .socle{background:linear-gradient(90deg,transparent,var(--or),transparent);height:8px;margin:18px -16px -30px}
-.argent .socle{background:linear-gradient(90deg,transparent,var(--argent),transparent)}
-.bronze .socle{background:linear-gradient(90deg,transparent,var(--bronze),transparent)}
-
-/* ============ LISTE ============ */
-.liste{display:flex;flex-direction:column;gap:7px}
-.ligne{
-  display:grid;grid-template-columns:42px 42px minmax(0,1fr) 150px 92px;
-  gap:16px;align-items:center;
-  padding:12px 18px;border-radius:var(--r-m);
-  background:linear-gradient(120deg,rgba(15,44,61,.75),rgba(10,33,48,.55));
-  border:1px solid transparent;
-  transition:border-color .22s,background .22s,transform .22s cubic-bezier(.2,.8,.3,1);
-}
-.ligne:hover{
-  border-color:var(--bord-vif);transform:translateX(4px);
-  background:linear-gradient(120deg,rgba(20,56,75,.9),rgba(10,33,48,.6));
-}
-.ligne .rang{
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
-  color:var(--texte-3);text-align:center;
-}
-.ligne img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid var(--bord)}
-.bloc-nom{min-width:0}
-.ligne .pseudo{font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ligne .sous{font-size:12px;color:var(--texte-3);margin-top:2px}
-.jauge{height:5px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}
-.jauge span{
-  display:block;height:100%;border-radius:100px;
-  background:linear-gradient(90deg,var(--teal-sombre),var(--teal));
-  width:0;transition:width .9s cubic-bezier(.3,.9,.3,1);
-}
-.jauge-lib{font-size:11px;color:var(--texte-3);margin-top:6px;text-align:right}
-.ligne .total{
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;
-  color:var(--teal);text-align:right;white-space:nowrap;
-}
-
-/* ============ CHARGER PLUS ============ */
-.zone-plus{display:flex;justify-content:center;margin-top:22px}
-.plus{
-  display:inline-flex;align-items:center;gap:10px;
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  color:var(--texte);font-family:'Inter',sans-serif;font-weight:500;font-size:14px;
-  border:1px solid var(--bord);border-radius:100px;
-  padding:12px 26px;cursor:pointer;
-  transition:border-color .22s,transform .22s cubic-bezier(.2,.8,.3,1),background .22s;
-}
-.plus:hover{border-color:var(--bord-vif);transform:translateY(-2px);background:var(--ardoise-clair)}
-.plus:active{transform:translateY(0)}
-.plus:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.plus .reste{color:var(--texte-3);font-size:13px}
-.plus svg{stroke:var(--teal);transition:transform .22s}
-.plus:hover svg{transform:translateY(2px)}
-
-/* ============ ETATS ============ */
-.vide{
-  text-align:center;padding:60px 24px;color:var(--texte-2);
-  border:1px dashed var(--bord);border-radius:var(--r-l);
-}
-.vide strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:17px;color:var(--texte);margin-bottom:6px}
-
-/* ============ PIED ============ */
-.pied{
-  margin-top:64px;padding-top:28px;border-top:1px solid var(--bord);
-  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-  color:var(--texte-3);font-size:13px;
-}
-.pied a{color:var(--teal);text-decoration:none}
-.pied a:hover{text-decoration:underline}
-
-/* ============ APPARITION ============ */
-.apparait{opacity:0;transform:translateY(14px)}
-.apparait.visible{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.3,1)}
-
-/* ============ RESPONSIVE ============ */
-@media (max-width:860px){
-  .ligne{grid-template-columns:36px 38px minmax(0,1fr) 86px;gap:12px;padding:12px 14px}
-  .col-jauge{display:none}
-}
-@media (max-width:720px){
-  .nav{
-    position:fixed;inset:66px 0 auto;flex-direction:column;align-items:stretch;gap:2px;
-    background:rgba(6,22,32,.97);backdrop-filter:blur(18px);
-    padding:14px clamp(16px,4vw,32px) 22px;border-bottom:1px solid var(--bord);
-    transform:translateY(-135%);transition:transform .32s cubic-bezier(.2,.8,.3,1);
-  }
-  .nav.deploye{transform:none}
-  .nav a{padding:13px 14px;font-size:15px}
-  .cta{margin:8px 0 0;justify-content:center;padding:13px 18px}
-  .burger{display:block}
-  .stats{grid-template-columns:1fr;gap:10px}
-  .stat{display:flex;align-items:baseline;justify-content:space-between;padding:15px 18px}
-  .stat-lib{margin-top:0}
-  .podium{grid-template-columns:1fr;gap:12px;align-items:stretch}
-  .marche{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:14px;text-align:left;padding:16px 18px}
-  .marche.or{padding:18px}
-  .marche .portrait{margin-bottom:0}
-  .or .portrait img{width:58px;height:58px}
-  .couronne{display:none}
-  .medaille{position:static;transform:none;border:none;width:24px;height:24px;font-size:13px}
-  .socle{display:none}
-  .marche .xp{margin-top:0}
-  .outils{gap:12px}
-  .recherche{max-width:none;flex-basis:100%}
-}
-@media (max-width:420px){
-  .ligne{grid-template-columns:28px 34px minmax(0,1fr);gap:10px;row-gap:2px}
-  .ligne .total{grid-column:3;text-align:left;font-size:13.5px}
-  .ligne .sous{display:none}
-}
-@media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-  .apparait{opacity:1;transform:none}
-  html{scroll-behavior:auto}
-}
-
-/* ============================================================
-   PAGE ACCUEIL
-   ============================================================ */
-.accueil-hero{
-  padding:clamp(56px,10vw,110px) 0 clamp(40px,6vw,60px);
-  display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,56px);align-items:center;
-}
-.accueil-hero h1{
-  font-size:clamp(42px,8vw,74px);font-weight:700;line-height:.96;letter-spacing:-.035em;
-  background:linear-gradient(170deg,#ffffff 25%,#8fe4da 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.accueil-hero .intro{color:var(--texte-2);margin-top:22px;font-size:17px;line-height:1.7;max-width:52ch}
-.actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
-.btn-second{
-  display:inline-flex;align-items:center;gap:9px;
-  background:transparent;color:var(--texte);font-weight:500;font-size:14.5px;
-  padding:12px 22px;border-radius:var(--r-s);text-decoration:none;
-  border:1px solid var(--bord);
-  transition:border-color .2s,background .2s,transform .18s cubic-bezier(.2,.8,.3,1);
-}
-.btn-second:hover{border-color:var(--bord-vif);background:rgba(80,220,205,.07);transform:translateY(-2px)}
-.btn-second:active{transform:translateY(0)}
-.btn-second:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.cta-large{padding:12px 24px;font-size:14.5px;margin-left:0}
-
-/* Vignette animée du hero */
-.vitrine{
-  position:relative;border-radius:var(--r-l);overflow:hidden;
-  background:linear-gradient(165deg,var(--ardoise-clair),var(--nuit-2));
-  border:1px solid var(--bord);box-shadow:var(--ombre-forte);
-  padding:24px;
-}
-.vitrine::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(90% 55% at 70% 0%,rgba(80,220,205,.18),transparent 60%);
-}
-.vitrine-titre{
-  display:flex;align-items:center;gap:9px;font-size:12px;color:var(--texte-3);
-  margin-bottom:16px;position:relative;
-}
-.vitrine-titre::after{content:"";flex:1;height:1px;background:var(--bord)}
-.mini-ligne{
-  display:grid;grid-template-columns:20px 30px 1fr auto;gap:11px;align-items:center;
-  padding:9px 11px;border-radius:11px;position:relative;
-  background:rgba(255,255,255,.03);margin-bottom:6px;
-}
-.mini-ligne:nth-child(2){background:linear-gradient(110deg,rgba(255,205,60,.13),rgba(255,255,255,.03))}
-.mini-ligne .r{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;color:var(--texte-3);text-align:center}
-.mini-ligne:nth-child(2) .r{color:var(--or)}
-.mini-ligne img{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bord)}
-.mini-ligne .n{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mini-ligne .x{font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:var(--teal)}
-
-/* ============ SECTIONS ACCUEIL ============ */
-.section{padding:clamp(44px,7vw,76px) 0}
-.section-tete{max-width:56ch;margin-bottom:clamp(26px,4vw,38px)}
-.section-tete h2{font-size:clamp(26px,4.5vw,36px);font-weight:600;letter-spacing:-.025em;line-height:1.15}
-.section-tete p{color:var(--texte-2);margin-top:14px;font-size:16px;line-height:1.65}
-
-.grille-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.carte{
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-m);
-  padding:24px 22px;position:relative;overflow:hidden;
-  transition:transform .26s cubic-bezier(.2,.8,.3,1),border-color .26s,box-shadow .26s;
-}
-.carte::before{
-  content:"";position:absolute;top:0;left:22px;right:22px;height:1px;
-  background:linear-gradient(90deg,transparent,var(--bord-vif),transparent);
-  opacity:0;transition:opacity .26s;
-}
-.carte:hover{transform:translateY(-4px);border-color:var(--bord-vif);box-shadow:var(--ombre)}
-.carte:hover::before{opacity:1}
-.carte-icone{
-  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;
-  background:rgba(80,220,205,.11);border:1px solid var(--bord-vif);
-}
-.carte-icone svg{stroke:var(--teal)}
-.carte h3{font-size:16.5px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px}
-.carte p{color:var(--texte-2);font-size:14.5px;line-height:1.6}
-
-/* ============ REGLES ============ */
-.regles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.groupe-regles{
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-m);padding:24px 22px;
-  transition:border-color .26s,transform .26s cubic-bezier(.2,.8,.3,1);
-}
-.groupe-regles:hover{border-color:var(--bord-vif);transform:translateY(-3px)}
-.groupe-tete{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.pastille-cat{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.groupe-tete h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
-.groupe-regles ul{list-style:none}
-.groupe-regles li{
-  position:relative;padding-left:22px;color:var(--texte-2);
-  font-size:14.5px;line-height:1.6;margin-bottom:11px;
-}
-.groupe-regles li:last-child{margin-bottom:0}
-.groupe-regles li::before{
-  content:"";position:absolute;left:5px;top:9px;
-  width:5px;height:5px;border-radius:50%;background:var(--texte-3);
-}
-
-/* ============ BANDEAU FINAL ============ */
-.bandeau{
-  position:relative;overflow:hidden;text-align:center;
-  background:linear-gradient(150deg,#14414a,#0a2734);
-  border:1px solid var(--bord-vif);border-radius:var(--r-l);
-  padding:clamp(36px,6vw,60px) clamp(22px,4vw,44px);
-}
-.bandeau::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(80% 90% at 50% 0%,rgba(80,220,205,.22),transparent 62%);
-}
-.bandeau h2{font-size:clamp(26px,5vw,40px);font-weight:700;letter-spacing:-.03em;position:relative}
-.bandeau p{color:var(--texte-2);margin:14px auto 28px;max-width:46ch;font-size:16px;line-height:1.6;position:relative}
-.bandeau .cta{position:relative;font-size:15px;padding:13px 28px;margin:0}
-
-/* ============================================================
-   PAGE RESEAUX
-   ============================================================ */
-.reseaux-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:16px}
-.reseau{
-  position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-l);
-  padding:26px 24px;
-  transition:transform .3s cubic-bezier(.2,.8,.3,1),border-color .3s,box-shadow .3s;
-}
-.reseau::before{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
-  background:radial-gradient(100% 70% at 50% 0%,var(--lueur,rgba(80,220,205,.2)),transparent 65%);
-  transition:opacity .3s;
-}
-.reseau:hover{transform:translateY(-5px);border-color:var(--teinte,var(--bord-vif));box-shadow:var(--ombre-forte)}
-.reseau:hover::before{opacity:1}
-.reseau:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.reseau-tete{display:flex;align-items:center;gap:14px;margin-bottom:18px;position:relative}
-.logo-rond{
-  width:48px;height:48px;border-radius:14px;flex-shrink:0;
-  display:grid;place-items:center;
-  background:var(--teinte,var(--teal));
-  transition:transform .3s cubic-bezier(.2,.8,.3,1);
-}
-.reseau:hover .logo-rond{transform:scale(1.06) rotate(-4deg)}
-.logo-rond svg{fill:#fff}
-.reseau-nom{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px;letter-spacing:-.01em}
-.reseau-pseudo{font-size:13px;color:var(--texte-3);margin-top:2px}
-.reseau p{color:var(--texte-2);font-size:14.5px;line-height:1.6;position:relative}
-.reseau-pied{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  margin-top:20px;padding-top:16px;border-top:1px solid var(--bord);position:relative;
-}
-.reseau-action{font-size:13.5px;font-weight:600;color:var(--teinte,var(--teal))}
-.reseau-fleche{
-  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
-  border:1px solid var(--bord);
-  transition:transform .28s cubic-bezier(.2,.8,.3,1),border-color .28s,background .28s;
-}
-.reseau:hover .reseau-fleche{
-  transform:translateX(4px);border-color:var(--teinte,var(--bord-vif));
-  background:color-mix(in srgb, var(--teinte, #50dccd) 16%, transparent);
-}
-.reseau-fleche svg{stroke:var(--texte-2)}
-.reseau:hover .reseau-fleche svg{stroke:var(--texte)}
-
-/* ============ RESPONSIVE PAGES ============ */
-@media (max-width:900px){
-  .accueil-hero{grid-template-columns:1fr;gap:34px}
-  .vitrine{order:2}
-  .grille-3{grid-template-columns:1fr 1fr}
-}
-@media (max-width:720px){
-  .grille-3{grid-template-columns:1fr}
-  .regles{grid-template-columns:1fr}
-  .actions{gap:10px}
-  .actions a{flex:1;justify-content:center;min-width:150px}
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="atmosphere"></div>
+<div class="ambiance"></div>
 
 <header class="entete" id="entete">
-  <div class="entete-inner">
+  <div class="entete-in">
     <a href="index.html" class="marque">
-      <img class="sigle" src="logo-dimeh.png" alt="Logo LA DÉLIRANCE" width="38" height="38">
-      <div class="marque-txt">
-        <div class="marque-nom">LA DÉLIRANCE</div>
-        <div class="marque-sous">Serveur Discord</div>
-      </div>
+      <img src="logo-dimeh.png" alt="" width="38" height="38">
+      <span>
+        <span class="marque-nom">LA DÉLIRANCE</span>
+        <span class="marque-sous">Communauté de Dimeh</span>
+      </span>
     </a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
       <span></span><span></span><span></span>
@@ -561,179 +36,133 @@ h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
     <nav class="nav" id="nav">
       <a href="index.html">Accueil</a>
       <a href="classement.html">Classement</a>
-      <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta">Rejoindre le serveur</a>
+      <a href="commandes.html">Commandes</a>
+      <a href="reseaux.html">Réseaux</a>
+      <a class="cta" href="https://discord.gg/deliree" target="_blank" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.1 16.1 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05-.01.07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.4.01-.5.06-.4.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02ZM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
+        Rejoindre le Discord
+      </a>
     </nav>
   </div>
 </header>
 
-<div class="page">
-
-  <section class="hero">
-    <div class="fil apparait"><span class="point-vif"></span> Suis l'actu en direct</div>
-    <h1 class="apparait">Les réseaux<br>de Dimeh</h1>
-    <p class="apparait">Lives, vidéos, coulisses et moments du quotidien. Choisis la plateforme qui te va, tout est au même endroit.</p>
+<main class="page">
+  <section class="hero" style="padding-bottom:clamp(24px,3vw,36px)">
+    <div class="pilule reveal"><span class="point"></span> Social hub</div>
+    <h1 class="reveal" style="font-size:clamp(40px,7.5vw,72px)">Les réseaux<br>de Dimeh</h1>
+    <p class="intro reveal" style="max-width:52ch">Suis-moi partout pour ne rien rater. Lives, vidéos, stories et coulisses : tout est ici.</p>
   </section>
 
-  <section>
-    <div class="reseaux-grille" id="reseaux"></div>
+  <section style="padding-bottom:clamp(52px,8vw,96px)">
+    <div class="hub" id="hub"></div>
   </section>
+</main>
+</main>
 
-  <section class="section">
-    <div class="bandeau apparait">
-      <h2>La communauté se retrouve sur Discord</h2>
-      <p>Les réseaux, c'est pour suivre. Le Discord, c'est pour discuter, participer et grimper au classement.</p>
-      <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta">Rejoindre LA DÉLIRANCE</a>
-    </div>
-  </section>
-
-  <footer class="pied">
-    <span>LA DÉLIRANCE · Communauté Discord</span>
-    <a href="classement.html">Voir le classement</a>
-  </footer>
+<!-- Modal profil -->
+<div class="voile" id="voile" role="dialog" aria-modal="true" aria-labelledby="profil-nom">
+  <div class="profil" id="profil"></div>
 </div>
 
+<footer class="pied">
+  <div class="pied-in">
+    <div class="pied-marque-col">
+      <div class="pied-marque">
+        <img src="logo-dimeh.png" alt="" width="34" height="34">
+        <span class="marque-nom">LA DÉLIRANCE</span>
+      </div>
+      <p class="pied-note">Le portail de la communauté Discord de Dimeh. Classement et statistiques mis à jour automatiquement.</p>
+    </div>
+    <div>
+      <div class="pied-titre">Navigation</div>
+      <div class="pied-col">
+        <a href="index.html">Accueil</a>
+        <a href="classement.html">Classement</a>
+        <a href="commandes.html">Commandes</a>
+        <a href="reseaux.html">Réseaux</a>
+      </div>
+    </div>
+    <div>
+      <div class="pied-titre">Contact</div>
+      <div class="pied-col">
+        <a href="https://discord.gg/deliree" target="_blank" rel="noopener">Rejoindre le Discord</a>
+        <a class="pied-mail" href="mailto:iliaswebpro@gmail.com">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+          iliaswebpro@gmail.com
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="pied-bas">
+    <span>Site développé par Ilias</span>
+    <span>LA DÉLIRANCE · <span id="annee"></span></span>
+  </div>
+</footer>
+
+<button class="haut" id="haut" aria-label="Retour en haut">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="app.js"></script>
 <script>
-/* ============================================================
-   Comportements partagés par toutes les pages
-   ============================================================ */
+document.getElementById('annee').textContent = new Date().getFullYear();
 
-/* --- Helpers --- */
-const fmt = n => n.toLocaleString('fr-FR');
-const esc = s => String(s).replace(/[&<>"']/g, c =>
-  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-/* Mêmes formules que le bot Discord, pour afficher les mêmes chiffres */
-const niveauDepuisXp = xp => Math.floor(Math.sqrt(xp / 150));
-const xpPourNiveau   = n  => Math.floor(n * n * 150);
-
-/* --- Header : bordure au défilement --- */
-const entete = document.getElementById('entete');
-if (entete) {
-  const surveiller = () => entete.classList.toggle('ancree', window.scrollY > 8);
-  window.addEventListener('scroll', surveiller, {passive:true});
-  surveiller();
-}
-
-/* --- Menu mobile --- */
-const burger = document.getElementById('burger');
-const nav = document.getElementById('nav');
-if (burger && nav) {
-  burger.addEventListener('click', () => {
-    const ouvert = nav.classList.toggle('deploye');
-    burger.classList.toggle('ouvert', ouvert);
-    burger.setAttribute('aria-expanded', ouvert);
-    burger.setAttribute('aria-label', ouvert ? 'Fermer le menu' : 'Ouvrir le menu');
-  });
-  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    nav.classList.remove('deploye');
-    burger.classList.remove('ouvert');
-    burger.setAttribute('aria-expanded','false');
-    burger.setAttribute('aria-label','Ouvrir le menu');
-  }));
-}
-
-/* --- Apparitions échelonnées au défilement --- */
-let observateur;
-function observerApparitions(){
-  // Repli : si l'API n'est pas disponible, on affiche tout sans animation
-  if (typeof IntersectionObserver === 'undefined') {
-    document.querySelectorAll('.apparait').forEach(el => el.classList.add('visible'));
-    return;
-  }
-  if (observateur) observateur.disconnect();
-  observateur = new IntersectionObserver(entrees => {
-    entrees.forEach((e,i) => {
-      if (!e.isIntersecting) return;
-      setTimeout(() => e.target.classList.add('visible'), Math.min(i * 45, 320));
-      observateur.unobserve(e.target);
-    });
-  }, {rootMargin:'0px 0px -40px 0px', threshold:.08});
-  document.querySelectorAll('.apparait:not(.visible)').forEach(el => observateur.observe(el));
-}
-
-/* --- Compteur animé (un seul moment de motion par page) --- */
-function compter(el, cible){
-  if (!el) return;
-  const reduit = typeof window.matchMedia === 'function' &&
-                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduit || cible === 0) { el.textContent = fmt(cible); return; }
-  const duree = 900, depart = performance.now();
-  const tick = t => {
-    const p = Math.min(1, (t - depart) / duree);
-    el.textContent = fmt(Math.round(cible * (1 - Math.pow(1 - p, 3))));
-    if (p < 1) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-}
-
-/* ===== Script propre a la page ===== */
 const RESEAUX = [
-  {
-    nom:"Twitch", pseudo:"@dimehdelire",
-    url:"https://www.twitch.tv/dimehdelire",
-    teinte:"#9146ff", lueur:"rgba(145,70,255,.22)",
-    texte:"Les lives, les parties entre potes et les moments qu'on ne revoit nulle part ailleurs.",
-    action:"Voir la chaîne",
-    logo:'<path d="M4.3 3 3 6.4v13.1h4.5V22h2.5l2.5-2.5h3.6L21 14.6V3H4.3zm15 10.8-2.9 2.9h-3.6l-2.5 2.5v-2.5H6.9V4.8h12.4v9zM15.6 8v5.3h-1.7V8h1.7zm-4.5 0v5.3H9.4V8h1.7z"/>'
-  },
-  {
-    nom:"Instagram", pseudo:"@dimehdeliree",
-    url:"https://www.instagram.com/dimehdeliree",
-    teinte:"#e1306c", lueur:"rgba(225,48,108,.22)",
-    texte:"Les photos, les stories et les coulisses au jour le jour.",
-    action:"Voir le profil",
-    logo:'<path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1M12 0C8.7 0 8.3 0 7 .1 5.7.1 4.8.3 4.1.6c-.8.3-1.4.7-2.1 1.4C1.3 2.7.9 3.3.6 4.1.3 4.8.1 5.7.1 7 0 8.3 0 8.7 0 12s0 3.7.1 5c.1 1.3.2 2.2.5 2.9.3.8.7 1.4 1.4 2.1.7.7 1.3 1.1 2.1 1.4.7.3 1.6.5 2.9.5 1.3.1 1.7.1 5 .1s3.7 0 5-.1c1.3-.1 2.2-.2 2.9-.5.8-.3 1.4-.7 2.1-1.4.7-.7 1.1-1.3 1.4-2.1.3-.7.5-1.6.5-2.9.1-1.3.1-1.7.1-5s0-3.7-.1-5c-.1-1.3-.2-2.2-.5-2.9-.3-.8-.7-1.4-1.4-2.1-.7-.7-1.3-1.1-2.1-1.4-.7-.3-1.6-.5-2.9-.5C15.7 0 15.3 0 12 0z"/><path d="M12 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="18.4" cy="5.6" r="1.4"/>'
-  },
-  {
-    nom:"TikTok", pseudo:"@dimehdeliree",
-    url:"https://www.tiktok.com/@dimehdeliree",
-    teinte:"#2de2dc", lueur:"rgba(45,226,220,.22)",
-    texte:"Les formats courts, les trends et les vidéos du moment.",
-    action:"Voir le compte",
-    logo:'<path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.5h-3.3v13a2.7 2.7 0 1 1-2-2.6V9.2a6 6 0 1 0 5.3 6V9.1a8 8 0 0 0 4.5 1.4V7.2c-.2 0-.5 0-.7-.1z"/>'
-  },
-  {
-    nom:"Snapchat", pseudo:"@dimehdeliree",
-    url:"https://www.snapchat.com/@dimehdeliree",
-    teinte:"#f7d900", lueur:"rgba(247,217,0,.22)",
-    texte:"Le quotidien sans filtre, en direct de la journée.",
-    action:"Ajouter",
-    logo:'<path d="M12 2c2.8 0 4.7 2 4.8 4.8v1.9c.5-.2 1-.3 1.4-.1.5.2.7.6.6 1-.2.6-1 .9-1.6 1.1-.3.1-.6.2-.6.5 0 .2.1.4.2.6.6 1.4 1.7 2.6 3.1 3 .3.1.5.3.4.6-.1.5-1 .8-1.9 1-.3 0-.4.3-.4.5-.1.4-.2.7-.5.7-.4 0-.9-.2-1.6-.2-.4 0-.8 0-1.2.2-.7.3-1.3 1.2-2.7 1.2s-2-.9-2.7-1.2c-.4-.2-.8-.2-1.2-.2-.7 0-1.2.2-1.6.2-.3 0-.4-.3-.5-.7 0-.2-.1-.5-.4-.5-.9-.2-1.8-.5-1.9-1-.1-.3.1-.5.4-.6 1.4-.4 2.5-1.6 3.1-3 .1-.2.2-.4.2-.6 0-.3-.3-.4-.6-.5-.6-.2-1.4-.5-1.6-1.1-.1-.4.1-.8.6-1 .4-.2.9-.1 1.4.1V6.8C7.3 4 9.2 2 12 2z"/>'
-  },
-  {
-    nom:"YouTube", pseudo:"@dimehdelire",
-    url:"https://www.youtube.com/@dimehdelire",
-    teinte:"#ff3737", lueur:"rgba(255,55,55,.22)",
-    texte:"Les vidéos longues, les rediffusions de lives et les projets travaillés.",
-    action:"S'abonner",
-    logo:'<path d="M23 7.2a2.8 2.8 0 0 0-2-2C19.2 4.7 12 4.7 12 4.7s-7.2 0-9 .5a2.8 2.8 0 0 0-2 2C.5 9 .5 12 .5 12s0 3 .5 4.8a2.8 2.8 0 0 0 2 2c1.8.5 9 .5 9 .5s7.2 0 9-.5a2.8 2.8 0 0 0 2-2c.5-1.8.5-4.8.5-4.8s0-3-.5-4.8zM9.7 15.4V8.6l6 3.4-6 3.4z"/>'
-  },
+  { nom:'Twitch', pseudo:'@dimehdelire', couleur:'#9146ff', majeur:true, etiquette:'En direct',
+    url:'https://www.twitch.tv/dimehdelire',
+    desc:"Le cœur de la communauté. Lives réguliers, gaming, discussions et grosses sessions avec le chat.",
+    action:'Regarder le live',
+    logo:'<path d="M4.3 3 3 6.5v13h4.5V22h2.5l2.5-2.5h3.7l4.8-4.8V3H4.3Zm15.2 10.7-2.7 2.7h-4l-2.3 2.3v-2.3H7.2V4.7h12.3v9ZM16.5 8v4.3h-1.7V8h1.7Zm-4.5 0v4.3h-1.7V8H12Z"/>' },
+
+  { nom:'Discord', pseudo:'LA DÉLIRANCE', couleur:'#5865f2', majeur:true, etiquette:'Communauté',
+    url:'https://discord.gg/deliree',
+    desc:"Le serveur officiel. Système de niveaux, classement, salons vocaux et une communauté active au quotidien.",
+    action:'Rejoindre le serveur',
+    logo:'<path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.1 16.1 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05-.01.07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.4.01-.5.06-.4.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02ZM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/>' },
+
+  { nom:'YouTube', pseudo:'@dimehdelire', couleur:'#ff0033',
+    url:'https://www.youtube.com/@dimehdelire',
+    desc:"Les meilleurs moments, les vidéos travaillées et les rediffusions à revoir tranquillement.",
+    action:'Voir la chaîne',
+    logo:'<path d="M23 12s0-3.5-.45-5.17a2.6 2.6 0 0 0-1.83-1.85C19.05 4.5 12 4.5 12 4.5s-7.05 0-8.72.48A2.6 2.6 0 0 0 1.45 6.83C1 8.5 1 12 1 12s0 3.5.45 5.17a2.6 2.6 0 0 0 1.83 1.85c1.67.48 8.72.48 8.72.48s7.05 0 8.72-.48a2.6 2.6 0 0 0 1.83-1.85C23 15.5 23 12 23 12ZM9.75 15.25v-6.5L15.5 12l-5.75 3.25Z"/>' },
+
+  { nom:'Instagram', pseudo:'@dimehdeliree', couleur:'#e1306c',
+    url:'https://www.instagram.com/dimehdeliree',
+    desc:"Photos, stories et coulisses. Le quotidien hors stream, en direct de mes journées.",
+    action:'Voir le profil',
+    logo:'<path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16ZM12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.3-1.46.72-2.13 1.38A5.9 5.9 0 0 0 .63 4.14c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13a5.9 5.9 0 0 0 2.13 1.38c.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0Z"/>' },
+
+  { nom:'TikTok', pseudo:'@dimehdeliree', couleur:'#2de2dc',
+    url:'https://www.tiktok.com/@dimehdeliree',
+    desc:"Les formats courts, les moments drôles et les extraits qui tournent en boucle.",
+    action:'Voir le profil',
+    logo:'<path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1 0-5.18c.27 0 .52.04.76.12v-3.2a5.9 5.9 0 0 0-.76-.05A5.73 5.73 0 0 0 4.13 15.3a5.73 5.73 0 0 0 5.73 5.73 5.73 5.73 0 0 0 5.73-5.73V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.28 4.28 0 0 1-3.29-1.48Z"/>' },
+
+  { nom:'Snapchat', pseudo:'@dimehdeliree', couleur:'#ffd400',
+    url:'https://www.snapchat.com/@dimehdeliree',
+    desc:"Le plus spontané : snaps du quotidien et annonces avant tout le monde.",
+    action:'Voir le profil',
+    logo:'<path d="M12 2c2.9 0 5.2 2.3 5.3 5.2v2.1c.5.2 1-.2 1.5-.2.6 0 1.2.4 1.2 1 0 .7-.9 1-1.6 1.3-.5.2-.9.3-.9.6 0 .9 2.5 3.6 4.2 4 .3.1.5.3.4.6-.2.7-1.6 1.1-2.6 1.3-.3 0-.4.2-.5.5 0 .2-.1.5-.2.7-.1.2-.3.3-.6.2-.5-.1-1-.2-1.6-.2-.9 0-1.5.2-2.2.8-.8.6-1.6 1.2-3 1.2-1.3 0-2.1-.6-3-1.2-.7-.5-1.3-.8-2.2-.8-.6 0-1.1.1-1.6.2-.3.1-.5 0-.6-.2-.1-.2-.2-.5-.2-.7-.1-.3-.2-.4-.5-.5-1-.2-2.4-.6-2.6-1.3-.1-.3.1-.5.4-.6 1.7-.4 4.2-3.1 4.2-4 0-.3-.4-.4-.9-.6-.7-.3-1.6-.6-1.6-1.3 0-.6.6-1 1.2-1 .5 0 1 .4 1.5.2V7.2C6.8 4.3 9.1 2 12 2Z"/>' },
 ];
 
-document.getElementById('reseaux').innerHTML = RESEAUX.map(r => `
-  <a class="reseau apparait" href="${r.url}" target="_blank" rel="noopener noreferrer"
-     style="--teinte:${r.teinte};--lueur:${r.lueur}">
-    <div class="reseau-tete">
-      <div class="logo-rond">
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">${r.logo}</svg>
-      </div>
-      <div>
-        <div class="reseau-nom">${esc(r.nom)}</div>
-        <div class="reseau-pseudo">${esc(r.pseudo)}</div>
-      </div>
-    </div>
-    <p>${esc(r.texte)}</p>
-    <div class="reseau-pied">
-      <span class="reseau-action">${esc(r.action)}</span>
-      <span class="reseau-fleche">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M13 6l6 6-6 6"/>
-        </svg>
+document.getElementById('hub').innerHTML = RESEAUX.map(r => `
+  <a class="reso reveal${r.majeur ? ' majeur' : ''}" style="--rc:${r.couleur}"
+     href="${r.url}" target="_blank" rel="noopener">
+    ${r.etiquette ? `<span class="reso-etiq">${esc(r.etiquette)}</span>` : ''}
+    <div class="reso-tete">
+      <span class="reso-logo">
+        <svg width="${r.majeur ? 26 : 22}" height="${r.majeur ? 26 : 22}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${r.logo}</svg>
+      </span>
+      <span>
+        <span class="reso-nom">${esc(r.nom)}</span>
+        <span class="reso-pseudo">${esc(r.pseudo)}</span>
       </span>
     </div>
+    <p class="reso-desc">${esc(r.desc)}</p>
+    <span class="reso-pied">${esc(r.action)}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </span>
   </a>`).join('');
-
-observerApparitions();
 </script>
 </body>
 </html>

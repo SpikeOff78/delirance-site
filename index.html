@@ -2,792 +2,330 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LA DÉLIRANCE — Serveur Discord</title>
-<meta name="description" content="Le serveur Discord de la communauté Dimeh. Classement, règles et réseaux.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LA DÉLIRANCE — La communauté de Dimeh</title>
+<meta name="description" content="Le portail officiel de LA DÉLIRANCE, la communauté Discord de Dimeh. Classement, niveaux, réseaux et règlement du serveur.">
+<meta name="theme-color" content="#07080d">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="logo-dimeh.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LA DÉLIRANCE">
+<meta property="og:title" content="LA DÉLIRANCE — La communauté de Dimeh">
+<meta property="og:description" content="Rejoins la communauté, grimpe dans le classement et suis Dimeh sur tous ses réseaux.">
+<meta property="og:image" content="https://delirance-site.vercel.app/logo-dimeh.png">
+<meta property="og:url" content="https://delirance-site.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-/* ============ TOKENS ============ */
-:root{
-  --nuit:#061620;
-  --nuit-2:#0a2130;
-  --ardoise:#0f2c3d;
-  --ardoise-clair:#14384b;
-  --bord:rgba(122,190,190,.14);
-  --bord-vif:rgba(80,220,205,.38);
-  --teal:#50dccd;
-  --teal-sombre:#1f8b81;
-  --or:#ffcd3c;
-  --argent:#cfdce0;
-  --bronze:#d08a5c;
-  --texte:#eefaf8;
-  --texte-2:#9dbfc2;
-  --texte-3:#6b8f96;
-  --r-s:10px;
-  --r-m:16px;
-  --r-l:22px;
-  --ombre:0 18px 40px -18px rgba(0,0,0,.75);
-  --ombre-forte:0 26px 60px -20px rgba(0,0,0,.85);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background:var(--nuit);
-  color:var(--texte);
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-h1,h2,h3,.chiffre{font-family:'Space Grotesk',system-ui,sans-serif}
-
-/* ============ DECOR DE FOND ============ */
-.atmosphere{position:fixed;inset:0;pointer-events:none;z-index:0}
-.atmosphere::before{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(70% 50% at 50% -10%, rgba(80,220,205,.20), transparent 65%),
-    radial-gradient(50% 40% at 88% 8%, rgba(31,139,129,.16), transparent 70%),
-    radial-gradient(60% 45% at 6% 30%, rgba(31,139,129,.10), transparent 70%);
-}
-.atmosphere::after{
-  content:"";position:absolute;inset:0;opacity:.35;
-  background-image:
-    linear-gradient(rgba(122,190,190,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(122,190,190,.05) 1px,transparent 1px);
-  background-size:64px 64px;
-  mask-image:radial-gradient(72% 55% at 50% 0%,#000,transparent 78%);
-  -webkit-mask-image:radial-gradient(72% 55% at 50% 0%,#000,transparent 78%);
-}
-
-/* ============ HEADER ============ */
-.entete{
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(18px) saturate(1.4);
-  -webkit-backdrop-filter:blur(18px) saturate(1.4);
-  background:rgba(6,22,32,.72);
-  border-bottom:1px solid transparent;
-  transition:border-color .3s ease,background .3s ease;
-}
-.entete.ancree{border-bottom-color:var(--bord);background:rgba(6,22,32,.88)}
-.entete-inner{
-  max-width:1080px;margin:0 auto;
-  padding:14px clamp(16px,4vw,32px);
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
-}
-.marque{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.sigle{
-  width:38px;height:38px;border-radius:11px;flex-shrink:0;
-  object-fit:cover;display:block;
-  border:1.5px solid var(--bord-vif);
-  box-shadow:0 6px 18px -8px rgba(80,220,205,.55);
-  transition:border-color .22s,transform .22s cubic-bezier(.2,.8,.3,1);
-}
-.marque:hover .sigle{border-color:var(--teal);transform:scale(1.04)}
-.marque-txt{line-height:1.15}
-.marque-nom{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;letter-spacing:-.01em}
-.marque-sous{font-size:11.5px;color:var(--texte-3)}
-
-.nav{display:flex;align-items:center;gap:4px}
-.nav a{
-  color:var(--texte-2);text-decoration:none;font-size:14px;font-weight:500;
-  padding:8px 14px;border-radius:var(--r-s);transition:color .2s,background .2s;
-}
-.nav a:hover{color:var(--texte);background:rgba(80,220,205,.09)}
-.nav a:focus-visible,.cta:focus-visible,.recherche input:focus-visible,.burger:focus-visible{
-  outline:2px solid var(--teal);outline-offset:3px;
-}
-.cta{
-  margin-left:8px;
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(145deg,var(--teal),var(--teal-sombre));
-  color:#04222a;font-weight:600;font-size:14px;
-  padding:9px 18px;border-radius:var(--r-s);text-decoration:none;
-  box-shadow:0 8px 22px -10px rgba(80,220,205,.75);
-  transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .18s,filter .18s;
-}
-.cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(80,220,205,.9);filter:brightness(1.06)}
-.cta:active{transform:translateY(0)}
-
-.burger{
-  display:none;background:none;border:1px solid var(--bord);
-  border-radius:var(--r-s);padding:9px;cursor:pointer;
-}
-.burger span{display:block;width:18px;height:2px;background:var(--texte);border-radius:2px;transition:transform .25s,opacity .2s}
-.burger span+span{margin-top:4px}
-.burger.ouvert span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.burger.ouvert span:nth-child(2){opacity:0}
-.burger.ouvert span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-
-/* ============ LAYOUT ============ */
-.page{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,32px) 100px}
-
-/* ============ HERO ============ */
-.hero{padding:clamp(48px,9vw,96px) 0 clamp(32px,5vw,48px)}
-.fil{
-  display:inline-flex;align-items:center;gap:9px;
-  font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--teal);
-  background:rgba(80,220,205,.09);border:1px solid var(--bord-vif);
-  padding:6px 13px;border-radius:100px;margin-bottom:22px;
-}
-.point-vif{
-  width:6px;height:6px;border-radius:50%;background:var(--teal);
-  animation:pulse 2.4s ease-out infinite;
-}
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(80,220,205,.5)}
-  70%{box-shadow:0 0 0 9px rgba(80,220,205,0)}
-  100%{box-shadow:0 0 0 0 rgba(80,220,205,0)}
-}
-.hero h1{
-  font-size:clamp(44px,9.5vw,86px);font-weight:700;line-height:.92;letter-spacing:-.035em;
-  background:linear-gradient(170deg,#ffffff 20%,#8fe4da 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.hero p{color:var(--texte-2);margin-top:20px;max-width:56ch;font-size:16.5px;line-height:1.65}
-
-.stats{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
-  margin-top:clamp(32px,5vw,44px);
-}
-.stat{
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-m);
-  padding:18px 20px;position:relative;overflow:hidden;
-  transition:transform .25s cubic-bezier(.2,.8,.3,1),border-color .25s;
-}
-.stat::before{
-  content:"";position:absolute;top:0;left:18px;right:18px;height:1px;
-  background:linear-gradient(90deg,transparent,var(--bord-vif),transparent);
-}
-.stat:hover{transform:translateY(-3px);border-color:var(--bord-vif)}
-.stat-val{font-size:clamp(24px,4.2vw,32px);font-weight:700;letter-spacing:-.02em;line-height:1}
-.stat-lib{font-size:12.5px;color:var(--texte-3);margin-top:7px}
-
-/* ============ BARRE OUTILS ============ */
-.outils{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  margin:clamp(40px,6vw,60px) 0 22px;flex-wrap:wrap;
-}
-.titre-section{display:flex;align-items:baseline;gap:12px}
-.titre-section h2{font-size:22px;font-weight:600;letter-spacing:-.02em}
-.compteur{font-size:13px;color:var(--texte-3)}
-.recherche{position:relative;flex:1;max-width:280px;min-width:190px}
-.recherche input{
-  width:100%;background:var(--nuit-2);color:var(--texte);
-  border:1px solid var(--bord);border-radius:var(--r-s);
-  padding:10px 14px 10px 38px;font-size:14px;font-family:inherit;
-  transition:border-color .2s,background .2s;
-}
-.recherche input::placeholder{color:var(--texte-3)}
-.recherche input:focus{border-color:var(--bord-vif);background:var(--ardoise);outline:none}
-.recherche svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);stroke:var(--texte-3)}
-
-/* ============ PODIUM ============ */
-.podium{
-  display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:clamp(10px,2vw,18px);
-  align-items:end;margin-bottom:clamp(28px,4vw,40px);
-}
-.marche{
-  position:relative;border-radius:var(--r-l);padding:22px 16px 20px;text-align:center;
-  background:linear-gradient(170deg,var(--ardoise-clair),var(--nuit-2));
-  border:1px solid var(--bord);
-  box-shadow:var(--ombre);
-  transition:transform .3s cubic-bezier(.2,.8,.3,1),box-shadow .3s,border-color .3s;
-}
-.marche:hover{transform:translateY(-5px);box-shadow:var(--ombre-forte)}
-.marche.or{
-  padding-top:34px;padding-bottom:30px;
-  border-color:rgba(255,205,60,.4);
-  background:linear-gradient(170deg,#1b4a4a,#0d2b38);
-}
-.marche.or::after{
-  content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(120% 60% at 50% 0%,rgba(255,205,60,.22),transparent 62%);
-}
-.marche.argent{border-color:rgba(207,220,224,.3)}
-.marche.bronze{border-color:rgba(208,138,92,.32)}
-.medaille{
-  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
-  width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#06202a;
-  border:3px solid var(--nuit);z-index:2;
-}
-.or .medaille{background:var(--or)}
-.argent .medaille{background:var(--argent)}
-.bronze .medaille{background:var(--bronze)}
-.couronne{
-  position:absolute;top:-30px;left:50%;transform:translateX(-50%);
-  font-size:26px;filter:drop-shadow(0 3px 10px rgba(255,205,60,.55));
-  animation:flotte 3.4s ease-in-out infinite;z-index:2;
-}
-@keyframes flotte{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
-.marche .portrait{position:relative;display:inline-block;margin-bottom:12px}
-.marche .portrait img{
-  border-radius:50%;object-fit:cover;display:block;
-  width:64px;height:64px;border:2.5px solid var(--bord);
-}
-.or .portrait img{width:84px;height:84px;border-color:var(--or)}
-.argent .portrait img{border-color:var(--argent)}
-.bronze .portrait img{border-color:var(--bronze)}
-.marche .pseudo{
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15.5px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.or .pseudo{font-size:19px}
-.marche .niv{font-size:12.5px;color:var(--texte-3);margin-top:3px}
-.marche .xp{
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;
-  color:var(--teal);margin-top:9px;
-}
-.or .xp{font-size:20px;color:var(--or)}
-.socle{height:6px;border-radius:0 0 var(--r-l) var(--r-l);margin:16px -16px -20px}
-.or .socle{background:linear-gradient(90deg,transparent,var(--or),transparent);height:8px;margin:18px -16px -30px}
-.argent .socle{background:linear-gradient(90deg,transparent,var(--argent),transparent)}
-.bronze .socle{background:linear-gradient(90deg,transparent,var(--bronze),transparent)}
-
-/* ============ LISTE ============ */
-.liste{display:flex;flex-direction:column;gap:7px}
-.ligne{
-  display:grid;grid-template-columns:42px 42px minmax(0,1fr) 150px 92px;
-  gap:16px;align-items:center;
-  padding:12px 18px;border-radius:var(--r-m);
-  background:linear-gradient(120deg,rgba(15,44,61,.75),rgba(10,33,48,.55));
-  border:1px solid transparent;
-  transition:border-color .22s,background .22s,transform .22s cubic-bezier(.2,.8,.3,1);
-}
-.ligne:hover{
-  border-color:var(--bord-vif);transform:translateX(4px);
-  background:linear-gradient(120deg,rgba(20,56,75,.9),rgba(10,33,48,.6));
-}
-.ligne .rang{
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
-  color:var(--texte-3);text-align:center;
-}
-.ligne img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid var(--bord)}
-.bloc-nom{min-width:0}
-.ligne .pseudo{font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ligne .sous{font-size:12px;color:var(--texte-3);margin-top:2px}
-.jauge{height:5px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}
-.jauge span{
-  display:block;height:100%;border-radius:100px;
-  background:linear-gradient(90deg,var(--teal-sombre),var(--teal));
-  width:0;transition:width .9s cubic-bezier(.3,.9,.3,1);
-}
-.jauge-lib{font-size:11px;color:var(--texte-3);margin-top:6px;text-align:right}
-.ligne .total{
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;
-  color:var(--teal);text-align:right;white-space:nowrap;
-}
-
-/* ============ CHARGER PLUS ============ */
-.zone-plus{display:flex;justify-content:center;margin-top:22px}
-.plus{
-  display:inline-flex;align-items:center;gap:10px;
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  color:var(--texte);font-family:'Inter',sans-serif;font-weight:500;font-size:14px;
-  border:1px solid var(--bord);border-radius:100px;
-  padding:12px 26px;cursor:pointer;
-  transition:border-color .22s,transform .22s cubic-bezier(.2,.8,.3,1),background .22s;
-}
-.plus:hover{border-color:var(--bord-vif);transform:translateY(-2px);background:var(--ardoise-clair)}
-.plus:active{transform:translateY(0)}
-.plus:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.plus .reste{color:var(--texte-3);font-size:13px}
-.plus svg{stroke:var(--teal);transition:transform .22s}
-.plus:hover svg{transform:translateY(2px)}
-
-/* ============ ETATS ============ */
-.vide{
-  text-align:center;padding:60px 24px;color:var(--texte-2);
-  border:1px dashed var(--bord);border-radius:var(--r-l);
-}
-.vide strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:17px;color:var(--texte);margin-bottom:6px}
-
-/* ============ PIED ============ */
-.pied{
-  margin-top:64px;padding-top:28px;border-top:1px solid var(--bord);
-  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-  color:var(--texte-3);font-size:13px;
-}
-.pied a{color:var(--teal);text-decoration:none}
-.pied a:hover{text-decoration:underline}
-
-/* ============ APPARITION ============ */
-.apparait{opacity:0;transform:translateY(14px)}
-.apparait.visible{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.3,1)}
-
-/* ============ RESPONSIVE ============ */
-@media (max-width:860px){
-  .ligne{grid-template-columns:36px 38px minmax(0,1fr) 86px;gap:12px;padding:12px 14px}
-  .col-jauge{display:none}
-}
-@media (max-width:720px){
-  .nav{
-    position:fixed;inset:66px 0 auto;flex-direction:column;align-items:stretch;gap:2px;
-    background:rgba(6,22,32,.97);backdrop-filter:blur(18px);
-    padding:14px clamp(16px,4vw,32px) 22px;border-bottom:1px solid var(--bord);
-    transform:translateY(-135%);transition:transform .32s cubic-bezier(.2,.8,.3,1);
-  }
-  .nav.deploye{transform:none}
-  .nav a{padding:13px 14px;font-size:15px}
-  .cta{margin:8px 0 0;justify-content:center;padding:13px 18px}
-  .burger{display:block}
-  .stats{grid-template-columns:1fr;gap:10px}
-  .stat{display:flex;align-items:baseline;justify-content:space-between;padding:15px 18px}
-  .stat-lib{margin-top:0}
-  .podium{grid-template-columns:1fr;gap:12px;align-items:stretch}
-  .marche{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:14px;text-align:left;padding:16px 18px}
-  .marche.or{padding:18px}
-  .marche .portrait{margin-bottom:0}
-  .or .portrait img{width:58px;height:58px}
-  .couronne{display:none}
-  .medaille{position:static;transform:none;border:none;width:24px;height:24px;font-size:13px}
-  .socle{display:none}
-  .marche .xp{margin-top:0}
-  .outils{gap:12px}
-  .recherche{max-width:none;flex-basis:100%}
-}
-@media (max-width:420px){
-  .ligne{grid-template-columns:28px 34px minmax(0,1fr);gap:10px;row-gap:2px}
-  .ligne .total{grid-column:3;text-align:left;font-size:13.5px}
-  .ligne .sous{display:none}
-}
-@media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-  .apparait{opacity:1;transform:none}
-  html{scroll-behavior:auto}
-}
-
-/* ============================================================
-   PAGE ACCUEIL
-   ============================================================ */
-.accueil-hero{
-  padding:clamp(56px,10vw,110px) 0 clamp(40px,6vw,60px);
-  display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,56px);align-items:center;
-}
-.accueil-hero h1{
-  font-size:clamp(42px,8vw,74px);font-weight:700;line-height:.96;letter-spacing:-.035em;
-  background:linear-gradient(170deg,#ffffff 25%,#8fe4da 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.accueil-hero .intro{color:var(--texte-2);margin-top:22px;font-size:17px;line-height:1.7;max-width:52ch}
-.actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
-.btn-second{
-  display:inline-flex;align-items:center;gap:9px;
-  background:transparent;color:var(--texte);font-weight:500;font-size:14.5px;
-  padding:12px 22px;border-radius:var(--r-s);text-decoration:none;
-  border:1px solid var(--bord);
-  transition:border-color .2s,background .2s,transform .18s cubic-bezier(.2,.8,.3,1);
-}
-.btn-second:hover{border-color:var(--bord-vif);background:rgba(80,220,205,.07);transform:translateY(-2px)}
-.btn-second:active{transform:translateY(0)}
-.btn-second:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.cta-large{padding:12px 24px;font-size:14.5px;margin-left:0}
-
-/* Vignette animée du hero */
-.vitrine{
-  position:relative;border-radius:var(--r-l);overflow:hidden;
-  background:linear-gradient(165deg,var(--ardoise-clair),var(--nuit-2));
-  border:1px solid var(--bord);box-shadow:var(--ombre-forte);
-  padding:24px;
-}
-.vitrine::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(90% 55% at 70% 0%,rgba(80,220,205,.18),transparent 60%);
-}
-.vitrine-titre{
-  display:flex;align-items:center;gap:9px;font-size:12px;color:var(--texte-3);
-  margin-bottom:16px;position:relative;
-}
-.vitrine-titre::after{content:"";flex:1;height:1px;background:var(--bord)}
-.mini-ligne{
-  display:grid;grid-template-columns:20px 30px 1fr auto;gap:11px;align-items:center;
-  padding:9px 11px;border-radius:11px;position:relative;
-  background:rgba(255,255,255,.03);margin-bottom:6px;
-}
-.mini-ligne:nth-child(2){background:linear-gradient(110deg,rgba(255,205,60,.13),rgba(255,255,255,.03))}
-.mini-ligne .r{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;color:var(--texte-3);text-align:center}
-.mini-ligne:nth-child(2) .r{color:var(--or)}
-.mini-ligne img{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bord)}
-.mini-ligne .n{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mini-ligne .x{font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:var(--teal)}
-
-/* ============ SECTIONS ACCUEIL ============ */
-.section{padding:clamp(44px,7vw,76px) 0}
-.section-tete{max-width:56ch;margin-bottom:clamp(26px,4vw,38px)}
-.section-tete h2{font-size:clamp(26px,4.5vw,36px);font-weight:600;letter-spacing:-.025em;line-height:1.15}
-.section-tete p{color:var(--texte-2);margin-top:14px;font-size:16px;line-height:1.65}
-
-.grille-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.carte{
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-m);
-  padding:24px 22px;position:relative;overflow:hidden;
-  transition:transform .26s cubic-bezier(.2,.8,.3,1),border-color .26s,box-shadow .26s;
-}
-.carte::before{
-  content:"";position:absolute;top:0;left:22px;right:22px;height:1px;
-  background:linear-gradient(90deg,transparent,var(--bord-vif),transparent);
-  opacity:0;transition:opacity .26s;
-}
-.carte:hover{transform:translateY(-4px);border-color:var(--bord-vif);box-shadow:var(--ombre)}
-.carte:hover::before{opacity:1}
-.carte-icone{
-  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;
-  background:rgba(80,220,205,.11);border:1px solid var(--bord-vif);
-}
-.carte-icone svg{stroke:var(--teal)}
-.carte h3{font-size:16.5px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px}
-.carte p{color:var(--texte-2);font-size:14.5px;line-height:1.6}
-
-/* ============ REGLES ============ */
-.regles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.groupe-regles{
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-m);padding:24px 22px;
-  transition:border-color .26s,transform .26s cubic-bezier(.2,.8,.3,1);
-}
-.groupe-regles:hover{border-color:var(--bord-vif);transform:translateY(-3px)}
-.groupe-tete{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.pastille-cat{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.groupe-tete h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
-.groupe-regles ul{list-style:none}
-.groupe-regles li{
-  position:relative;padding-left:22px;color:var(--texte-2);
-  font-size:14.5px;line-height:1.6;margin-bottom:11px;
-}
-.groupe-regles li:last-child{margin-bottom:0}
-.groupe-regles li::before{
-  content:"";position:absolute;left:5px;top:9px;
-  width:5px;height:5px;border-radius:50%;background:var(--texte-3);
-}
-
-/* ============ BANDEAU FINAL ============ */
-.bandeau{
-  position:relative;overflow:hidden;text-align:center;
-  background:linear-gradient(150deg,#14414a,#0a2734);
-  border:1px solid var(--bord-vif);border-radius:var(--r-l);
-  padding:clamp(36px,6vw,60px) clamp(22px,4vw,44px);
-}
-.bandeau::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(80% 90% at 50% 0%,rgba(80,220,205,.22),transparent 62%);
-}
-.bandeau h2{font-size:clamp(26px,5vw,40px);font-weight:700;letter-spacing:-.03em;position:relative}
-.bandeau p{color:var(--texte-2);margin:14px auto 28px;max-width:46ch;font-size:16px;line-height:1.6;position:relative}
-.bandeau .cta{position:relative;font-size:15px;padding:13px 28px;margin:0}
-
-/* ============================================================
-   PAGE RESEAUX
-   ============================================================ */
-.reseaux-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:16px}
-.reseau{
-  position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;
-  background:linear-gradient(165deg,var(--ardoise),var(--nuit-2));
-  border:1px solid var(--bord);border-radius:var(--r-l);
-  padding:26px 24px;
-  transition:transform .3s cubic-bezier(.2,.8,.3,1),border-color .3s,box-shadow .3s;
-}
-.reseau::before{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
-  background:radial-gradient(100% 70% at 50% 0%,var(--lueur,rgba(80,220,205,.2)),transparent 65%);
-  transition:opacity .3s;
-}
-.reseau:hover{transform:translateY(-5px);border-color:var(--teinte,var(--bord-vif));box-shadow:var(--ombre-forte)}
-.reseau:hover::before{opacity:1}
-.reseau:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.reseau-tete{display:flex;align-items:center;gap:14px;margin-bottom:18px;position:relative}
-.logo-rond{
-  width:48px;height:48px;border-radius:14px;flex-shrink:0;
-  display:grid;place-items:center;
-  background:var(--teinte,var(--teal));
-  transition:transform .3s cubic-bezier(.2,.8,.3,1);
-}
-.reseau:hover .logo-rond{transform:scale(1.06) rotate(-4deg)}
-.logo-rond svg{fill:#fff}
-.reseau-nom{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px;letter-spacing:-.01em}
-.reseau-pseudo{font-size:13px;color:var(--texte-3);margin-top:2px}
-.reseau p{color:var(--texte-2);font-size:14.5px;line-height:1.6;position:relative}
-.reseau-pied{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  margin-top:20px;padding-top:16px;border-top:1px solid var(--bord);position:relative;
-}
-.reseau-action{font-size:13.5px;font-weight:600;color:var(--teinte,var(--teal))}
-.reseau-fleche{
-  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
-  border:1px solid var(--bord);
-  transition:transform .28s cubic-bezier(.2,.8,.3,1),border-color .28s,background .28s;
-}
-.reseau:hover .reseau-fleche{
-  transform:translateX(4px);border-color:var(--teinte,var(--bord-vif));
-  background:color-mix(in srgb, var(--teinte, #50dccd) 16%, transparent);
-}
-.reseau-fleche svg{stroke:var(--texte-2)}
-.reseau:hover .reseau-fleche svg{stroke:var(--texte)}
-
-/* ============ RESPONSIVE PAGES ============ */
-@media (max-width:900px){
-  .accueil-hero{grid-template-columns:1fr;gap:34px}
-  .vitrine{order:2}
-  .grille-3{grid-template-columns:1fr 1fr}
-}
-@media (max-width:720px){
-  .grille-3{grid-template-columns:1fr}
-  .regles{grid-template-columns:1fr}
-  .actions{gap:10px}
-  .actions a{flex:1;justify-content:center;min-width:150px}
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="atmosphere"></div>
+<div class="ambiance"></div>
 
 <header class="entete" id="entete">
-  <div class="entete-inner">
+  <div class="entete-in">
     <a href="index.html" class="marque">
-      <img class="sigle" src="logo-dimeh.png" alt="Logo LA DÉLIRANCE" width="38" height="38">
-      <div class="marque-txt">
-        <div class="marque-nom">LA DÉLIRANCE</div>
-        <div class="marque-sous">Serveur Discord</div>
-      </div>
+      <img src="logo-dimeh.png" alt="" width="38" height="38">
+      <span>
+        <span class="marque-nom">LA DÉLIRANCE</span>
+        <span class="marque-sous">Communauté de Dimeh</span>
+      </span>
     </a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
       <span></span><span></span><span></span>
     </button>
     <nav class="nav" id="nav">
+      <a href="index.html">Accueil</a>
       <a href="classement.html">Classement</a>
+      <a href="commandes.html">Commandes</a>
       <a href="reseaux.html">Réseaux</a>
-      <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta">Rejoindre le serveur</a>
+      <a class="cta" href="https://discord.gg/deliree" target="_blank" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.1 16.1 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05-.01.07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.4.01-.5.06-.4.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02ZM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
+        Rejoindre le Discord
+      </a>
     </nav>
   </div>
 </header>
 
-<div class="page">
+<main class="page">
 
-  <section class="accueil-hero">
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="hero-grille">
+      <div>
+        <div class="pilule reveal"><span class="point"></span> Communauté active</div>
+        <h1 class="reveal">LA<br>DÉLIRANCE</h1>
+        <p class="accroche reveal">La communauté de Dimeh</p>
+        <p class="intro reveal">Un serveur où on parle, on délire et on monte en niveau ensemble. Plus tu participes, plus tu grimpes dans le classement.</p>
+        <div class="boutons reveal">
+          <a class="btn btn-1" href="https://discord.gg/deliree" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.1 16.1 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05-.01.07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.4.01-.5.06-.4.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02ZM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
+            Rejoindre le Discord
+          </a>
+          <a class="btn btn-2" href="#communaute">
+            Découvrir la communauté
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="portrait reveal">
+        <div class="portrait-halo"></div>
+        <div class="orbe"></div>
+        <div class="portrait-cadre">
+          <img src="logo-dimeh.png" alt="Dimeh" width="300" height="300">
+          <div class="portrait-nom">Dimeh<span>Créateur</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LIVE ══ -->
+  <section class="section" id="live" style="padding-top:0">
+    <div class="section-tete reveal">
+      <span class="oeil">En direct</span>
+      <h2 class="titre">Le stream</h2>
+    </div>
+    <div class="live reveal" id="bloc-live">
+      <span class="live-etat off"><span class="rond"></span>CHARGEMENT</span>
+      <div class="live-info">
+        <div class="live-titre">Vérification du statut…</div>
+        <div class="live-meta"><span>Un instant</span></div>
+      </div>
+      <a class="btn btn-twitch" href="https://www.twitch.tv/dimehdelire" target="_blank" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.3 3 3 6.5v13h4.5V22h2.5l2.5-2.5h3.7l4.8-4.8V3H4.3Zm15.2 10.7-2.7 2.7h-4l-2.3 2.3v-2.3H7.2V4.7h12.3v9ZM16.5 8v4.3h-1.7V8h1.7Zm-4.5 0v4.3h-1.7V8H12Z"/></svg>
+        Regarder le live
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ STATS ══ -->
+  <section class="section" id="communaute" style="padding-top:0">
+    <div class="section-tete reveal">
+      <span class="oeil">Notre communauté</span>
+      <h2 class="titre">La Délirance en chiffres</h2>
+      <p class="sous">Des données réelles, mises à jour automatiquement depuis le serveur Discord.</p>
+    </div>
+    <div class="stats" id="stats">
+      <div class="stat reveal">
+        <div class="stat-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="stat-val mono" id="s-membres">—</div>
+        <div class="stat-lib">Membres classés</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 7h5l-3 7"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="stat-val mono" id="s-xp">—</div>
+        <div class="stat-lib">XP distribuée</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+        <div class="stat-val mono" id="s-niveau">—</div>
+        <div class="stat-lib">Niveau maximum</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div>
+        <div class="stat-val mono" id="s-actifs">—</div>
+        <div class="stat-lib">Membres actifs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RÈGLEMENT ══ -->
+  <section class="section" id="reglement" style="padding-top:0">
+    <div class="section-tete reveal">
+      <span class="oeil">Avant de commencer</span>
+      <h2 class="titre">Le règlement</h2>
+      <p class="sous">Quelques règles simples pour que tout le monde passe un bon moment. Clique sur une catégorie pour la déplier.</p>
+    </div>
+    <div class="regles" id="regles"></div>
+  </section>
+
+  <!-- ══ BANDEAU ══ -->
+  <section class="section" style="padding-top:0">
+    <div class="bandeau reveal">
+      <h2>Prêt à nous rejoindre ?</h2>
+      <p>L'XP se gagne en discutant dans les salons et en passant du temps en vocal. Plus tu participes, plus tu montes.</p>
+      <a class="btn btn-1" href="https://discord.gg/deliree" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.1 16.1 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05-.01.07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.4.01-.5.06-.4.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02ZM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
+        Rejoindre le Discord
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pied">
+  <div class="pied-in">
+    <div class="pied-marque-col">
+      <div class="pied-marque">
+        <img src="logo-dimeh.png" alt="" width="34" height="34">
+        <span class="marque-nom">LA DÉLIRANCE</span>
+      </div>
+      <p class="pied-note">Le portail de la communauté Discord de Dimeh. Classement et statistiques mis à jour automatiquement.</p>
+    </div>
     <div>
-      <div class="fil apparait"><span class="point-vif"></span> Communauté active</div>
-      <h1 class="apparait">Bienvenue chez<br>LA DÉLIRANCE</h1>
-      <p class="intro apparait">La communauté de Dimeh. On discute, on se retrouve en vocal, on monte de niveau ensemble. Viens comme tu es, reste pour l'ambiance.</p>
-      <div class="actions apparait">
-        <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta cta-large">Rejoindre le serveur</a>
-        <a href="classement.html" class="btn-second">
-          Voir le classement
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M13 6l6 6-6 6"/>
-          </svg>
+      <div class="pied-titre">Navigation</div>
+      <div class="pied-col">
+        <a href="index.html">Accueil</a>
+        <a href="classement.html">Classement</a>
+        <a href="commandes.html">Commandes</a>
+        <a href="reseaux.html">Réseaux</a>
+      </div>
+    </div>
+    <div>
+      <div class="pied-titre">Contact</div>
+      <div class="pied-col">
+        <a href="https://discord.gg/deliree" target="_blank" rel="noopener">Rejoindre le Discord</a>
+        <a class="pied-mail" href="mailto:iliaswebpro@gmail.com">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+          iliaswebpro@gmail.com
         </a>
       </div>
     </div>
+  </div>
+  <div class="pied-bas">
+    <span>Site développé par Ilias</span>
+    <span>LA DÉLIRANCE · <span id="annee"></span></span>
+  </div>
+</footer>
 
-    <div class="vitrine apparait">
-      <div class="vitrine-titre">Classement en direct</div>
-      <div id="apercu"></div>
-    </div>
-  </section>
+<button class="haut" id="haut" aria-label="Retour en haut">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
-  <section class="section">
-    <div class="section-tete apparait">
-      <h2>Ce qui t'attend sur le serveur</h2>
-      <p>Plus tu participes, plus tu montes. Chaque message et chaque minute passée en vocal compte.</p>
-    </div>
-    <div class="grille-3">
-      <article class="carte apparait">
-        <div class="carte-icone">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        </div>
-        <h3>Un système de niveaux</h3>
-        <p>Chaque message rapporte entre 10 et 30 XP. Cinq minutes en vocal accompagné en rapportent 24 à 45. Les niveaux débloquent des rôles exclusifs.</p>
-      </article>
-
-      <article class="carte apparait">
-        <div class="carte-icone">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 21h8M12 17v4"/><path d="M17 4h3v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V4h3"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/>
-          </svg>
-        </div>
-        <h3>Un classement public</h3>
-        <p>Le podium est mis à jour en direct. Les trois premiers ont droit à une carte de profil aux couleurs or, argent et bronze.</p>
-      </article>
-
-      <article class="carte apparait">
-        <div class="carte-icone">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <h3>Une modération présente</h3>
-        <p>Une équipe active, un système de tickets pour signaler un problème en privé, et des protections automatiques contre les abus.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="section" id="regles">
-    <div class="section-tete apparait">
-      <h2>Le règlement</h2>
-      <p>Quelques règles simples pour que tout le monde s'y retrouve. En rejoignant le serveur, tu acceptes de les respecter.</p>
-    </div>
-    <div class="regles">
-      <article class="groupe-regles apparait">
-        <div class="groupe-tete">
-          <span class="pastille-cat" style="background:#5895f2"></span>
-          <h3>Respect</h3>
-        </div>
-        <ul>
-          <li>Reste courtois et respectueux envers tous les membres</li>
-          <li>Zéro tolérance pour le racisme, le sexisme, l'homophobie et toute forme de discrimination</li>
-          <li>Pas de harcèlement ni d'attaques personnelles</li>
-        </ul>
-      </article>
-
-      <article class="groupe-regles apparait">
-        <div class="groupe-tete">
-          <span class="pastille-cat" style="background:#eb5a5a"></span>
-          <h3>Interdits</h3>
-        </div>
-        <ul>
-          <li>Pas de spam ni d'autopromo sans autorisation</li>
-          <li>Pas de contenu NSFW</li>
-          <li>Pas de discussions politiques ou religieuses</li>
-        </ul>
-      </article>
-
-      <article class="groupe-regles apparait">
-        <div class="groupe-tete">
-          <span class="pastille-cat" style="background:#3cc8be"></span>
-          <h3>Un souci ?</h3>
-        </div>
-        <ul>
-          <li>Ouvre un ticket plutôt que de régler ça publiquement</li>
-          <li>L'équipe de modération répond en privé, rapidement</li>
-        </ul>
-      </article>
-
-      <article class="groupe-regles apparait">
-        <div class="groupe-tete">
-          <span class="pastille-cat" style="background:#ffcd3c"></span>
-          <h3>Ambiance</h3>
-        </div>
-        <ul>
-          <li>Viens t'amuser et profite du serveur</li>
-          <li>Participe aux discussions, c'est comme ça qu'on monte de niveau</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="bandeau apparait">
-      <h2>Prêt à nous rejoindre ?</h2>
-      <p>L'entrée est libre. Présente-toi, lance une discussion, et commence à gagner de l'XP dès ton premier message.</p>
-      <a href="https://discord.gg/deliree" target="_blank" rel="noopener" class="cta">Rejoindre LA DÉLIRANCE</a>
-    </div>
-  </section>
-
-  <footer class="pied">
-    <span>LA DÉLIRANCE · Communauté Discord</span>
-    <a href="reseaux.html">Les réseaux de Dimeh</a>
-  </footer>
-</div>
-
+<script src="app.js"></script>
 <script>
-/* ============================================================
-   Comportements partagés par toutes les pages
-   ============================================================ */
+document.getElementById('annee').textContent = new Date().getFullYear();
 
-/* --- Helpers --- */
-const fmt = n => n.toLocaleString('fr-FR');
-const esc = s => String(s).replace(/[&<>"']/g, c =>
-  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-/* Mêmes formules que le bot Discord, pour afficher les mêmes chiffres */
-const niveauDepuisXp = xp => Math.floor(Math.sqrt(xp / 150));
-const xpPourNiveau   = n  => Math.floor(n * n * 150);
-
-/* --- Header : bordure au défilement --- */
-const entete = document.getElementById('entete');
-if (entete) {
-  const surveiller = () => entete.classList.toggle('ancree', window.scrollY > 8);
-  window.addEventListener('scroll', surveiller, {passive:true});
-  surveiller();
-}
-
-/* --- Menu mobile --- */
-const burger = document.getElementById('burger');
-const nav = document.getElementById('nav');
-if (burger && nav) {
-  burger.addEventListener('click', () => {
-    const ouvert = nav.classList.toggle('deploye');
-    burger.classList.toggle('ouvert', ouvert);
-    burger.setAttribute('aria-expanded', ouvert);
-    burger.setAttribute('aria-label', ouvert ? 'Fermer le menu' : 'Ouvrir le menu');
-  });
-  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    nav.classList.remove('deploye');
-    burger.classList.remove('ouvert');
-    burger.setAttribute('aria-expanded','false');
-    burger.setAttribute('aria-label','Ouvrir le menu');
-  }));
-}
-
-/* --- Apparitions échelonnées au défilement --- */
-let observateur;
-function observerApparitions(){
-  // Repli : si l'API n'est pas disponible, on affiche tout sans animation
-  if (typeof IntersectionObserver === 'undefined') {
-    document.querySelectorAll('.apparait').forEach(el => el.classList.add('visible'));
-    return;
-  }
-  if (observateur) observateur.disconnect();
-  observateur = new IntersectionObserver(entrees => {
-    entrees.forEach((e,i) => {
-      if (!e.isIntersecting) return;
-      setTimeout(() => e.target.classList.add('visible'), Math.min(i * 45, 320));
-      observateur.unobserve(e.target);
-    });
-  }, {rootMargin:'0px 0px -40px 0px', threshold:.08});
-  document.querySelectorAll('.apparait:not(.visible)').forEach(el => observateur.observe(el));
-}
-
-/* --- Compteur animé (un seul moment de motion par page) --- */
-function compter(el, cible){
-  if (!el) return;
-  const reduit = typeof window.matchMedia === 'function' &&
-                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduit || cible === 0) { el.textContent = fmt(cible); return; }
-  const duree = 900, depart = performance.now();
-  const tick = t => {
-    const p = Math.min(1, (t - depart) / duree);
-    el.textContent = fmt(Math.round(cible * (1 - Math.pow(1 - p, 3))));
-    if (p < 1) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-}
-
-/* ===== Script propre a la page ===== */
-/* Aperçu du top 3, repris du classement */
-const APERCU = [
-  {pseudo:"Farah",     xp:25132, avatar:"https://api.dicebear.com/7.x/thumbs/svg?seed=Farah"},
-  {pseudo:"3arbi 7ar", xp:14190, avatar:"https://api.dicebear.com/7.x/thumbs/svg?seed=arbi7ar"},
-  {pseudo:"Chaï",      xp:10923, avatar:"https://api.dicebear.com/7.x/thumbs/svg?seed=Chai"},
-  {pseudo:"Eren",      xp:7690,  avatar:"https://api.dicebear.com/7.x/thumbs/svg?seed=Eren"},
+/* ─── Règlement ─── */
+const REGLES = [
+  { titre:'Respect', teinte:'#9d5cff',
+    icone:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>',
+    points:[
+      'Reste courtois et respectueux envers tous les membres',
+      'Zéro tolérance pour le racisme, le sexisme, l\'homophobie et toute forme de discrimination',
+      'Pas de harcèlement ni d\'attaques personnelles'
+    ]},
+  { titre:'Interdits', teinte:'#ff3b5c',
+    icone:'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>',
+    points:[
+      'Pas de spam ni d\'autopromo sans autorisation',
+      'Pas de contenu NSFW',
+      'Pas de discussions politiques ou religieuses'
+    ]},
+  { titre:'Communication', teinte:'#3ddad0',
+    icone:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    points:[
+      'Utilise le bon salon pour le bon sujet',
+      'Évite le spam de mentions et les messages en boucle',
+      'Le vocal est là pour discuter : reste correct au micro'
+    ]},
+  { titre:'Modération', teinte:'#ffc53d',
+    icone:'<path d="M14 9V5a3 3 0 0 0-6 0v4"/><rect x="2" y="9" width="20" height="11" rx="2"/>',
+    points:[
+      'Un souci ? Passe par un ticket plutôt que de régler ça publiquement',
+      'Les décisions du staff sont à respecter',
+      'Toute action de modération est enregistrée'
+    ]},
+  { titre:'Ambiance', teinte:'#ff8a3d',
+    icone:'<path d="M12 2s4 5 4 9a4 4 0 0 1-8 0c0-4 4-9 4-9Z"/><path d="M12 22a6 6 0 0 0 6-6c0-2-1-4-2-5"/>',
+    points:[
+      'Le principal : viens t\'amuser et profite du serveur',
+      'Accueille les nouveaux, tout le monde a commencé quelque part'
+    ]},
 ];
 
-document.getElementById('apercu').innerHTML = APERCU.map((j,i) => `
-  <div class="mini-ligne">
-    <span class="r">${i+1}</span>
-    <img src="${j.avatar}" alt="" loading="lazy">
-    <span class="n">${esc(j.pseudo)}</span>
-    <span class="x">${fmt(j.xp)} XP</span>
+document.getElementById('regles').innerHTML = REGLES.map((r, i) => `
+  <div class="regle reveal${i === 0 ? ' ouverte' : ''}" style="--teinte:${r.teinte}">
+    <button class="regle-tete" aria-expanded="${i === 0}">
+      <span class="regle-puce">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${r.icone}</svg>
+      </span>
+      ${esc(r.titre)}
+      <span class="regle-nb">${r.points.length} règle${r.points.length > 1 ? 's' : ''}</span>
+      <svg class="regle-fleche" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="regle-corps"><div>
+      <ul class="regle-liste">${r.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+    </div></div>
   </div>`).join('');
 
-observerApparitions();
+document.querySelectorAll('.regle-tete').forEach(b => b.addEventListener('click', () => {
+  const bloc = b.closest('.regle');
+  const ouvert = bloc.classList.toggle('ouverte');
+  b.setAttribute('aria-expanded', String(ouvert));
+}));
+
+/* ─── Statut du live ─── */
+async function chargerLive(){
+  const bloc = document.getElementById('bloc-live');
+  const etat = bloc.querySelector('.live-etat');
+  const titre = bloc.querySelector('.live-titre');
+  const meta = bloc.querySelector('.live-meta');
+  try{
+    const r = await fetch('/api/live');
+    if(!r.ok) throw new Error('statut ' + r.status);
+    const d = await r.json();
+
+    if(d.enDirect){
+      bloc.classList.add('en-direct');
+      etat.className = 'live-etat on';
+      etat.innerHTML = '<span class="rond"></span>EN LIVE';
+      titre.textContent = d.titre || 'Dimeh est en direct';
+      meta.innerHTML = [
+        d.jeu ? `<span>${esc(d.jeu)}</span>` : '',
+        d.viewers != null ? `<span><b>${fmt(d.viewers)}</b> spectateurs</span>` : '',
+        d.duree ? `<span>depuis <b>${esc(d.duree)}</b></span>` : ''
+      ].filter(Boolean).join('') || '<span>En direct sur Twitch</span>';
+    } else {
+      bloc.classList.remove('en-direct');
+      etat.className = 'live-etat off';
+      etat.innerHTML = '<span class="rond"></span>HORS LIGNE';
+      titre.textContent = 'Le prochain live arrive bientôt';
+      meta.innerHTML = '<span>Abonne-toi sur Twitch pour être prévenu</span>';
+    }
+  }catch(e){
+    bloc.classList.remove('en-direct');
+    etat.className = 'live-etat off';
+    etat.innerHTML = '<span class="rond"></span>HORS LIGNE';
+    titre.textContent = 'Le prochain live arrive bientôt';
+    meta.innerHTML = '<span>Abonne-toi sur Twitch pour être prévenu</span>';
+  }
+}
+
+/* ─── Statistiques ─── */
+async function chargerStats(){
+  const mettre = (id, valeur) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.dataset.compteur = valeur;
+    anime(el, valeur);
+  };
+  try{
+    const r = await fetch('/api/classement');
+    if(!r.ok) throw new Error('statut ' + r.status);
+    const d = await r.json();
+    const m = d.membres || [];
+    if(!m.length){ ['s-membres','s-xp','s-niveau','s-actifs'].forEach(i => {
+      const el = document.getElementById(i); if(el) el.textContent = '—'; }); return; }
+
+    const totalXp = m.reduce((s, x) => s + (x.xp || 0), 0);
+    const niveauMax = Math.max(...m.map(x => niveauDepuisXp(x.xp)));
+    const actifs = m.filter(x => (x.xp || 0) >= 150).length;
+
+    mettre('s-membres', m.length);
+    mettre('s-xp', totalXp);
+    mettre('s-niveau', niveauMax);
+    mettre('s-actifs', actifs);
+  }catch(e){
+    ['s-membres','s-xp','s-niveau','s-actifs'].forEach(i => {
+      const el = document.getElementById(i); if(el) el.textContent = '—'; });
+  }
+}
+
+chargerLive();
+chargerStats();
 </script>
 </body>
 </html>
