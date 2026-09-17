@@ -901,35 +901,87 @@ h2.titre{font-size:clamp(27px,4.4vw,40px);font-weight:700;letter-spacing:-.03em;
 }
 
 /* ═══════════ ITEM "SOUTIEN GAZA" DANS LA NAVIGATION ═══════════
-   Même typo et même taille que les autres items. Simplement détaché
-   du groupe principal par une marge et un filet discret. */
+   Teinte aux 4 couleurs du drapeau, à très faible opacité : on
+   reconnaît le drapeau sans que ça jure avec le reste du menu. */
 .nav a.nav-gaza{
-  margin-left:clamp(10px,2vw,26px);
-  padding-left:clamp(12px,2vw,20px);
-  border-left:1px solid var(--bord-2);
+  position:relative;overflow:hidden;
+  margin-left:clamp(10px,2vw,22px);
   display:inline-flex;align-items:center;gap:7px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:var(--r-s);
+  background:linear-gradient(90deg,
+    rgba(228,49,43,.16) 0%,  rgba(228,49,43,.16) 25%,
+    rgba(0,0,0,.30)     25%, rgba(0,0,0,.30)     50%,
+    rgba(255,255,255,.12) 50%, rgba(255,255,255,.12) 75%,
+    rgba(0,122,61,.20)  75%, rgba(0,122,61,.20)  100%);
+  transition:border-color var(--transition), filter var(--transition);
 }
+/* Fin liseré des 4 couleurs en bas, plus net que le fond */
+.nav a.nav-gaza::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:linear-gradient(90deg,
+    #E4312B 0 25%, #000000 25% 50%, #FFFFFF 50% 75%, #007A3D 75% 100%);
+  opacity:.75;
+}
+.nav a.nav-gaza:hover{
+  background:linear-gradient(90deg,
+    rgba(228,49,43,.24) 0%,  rgba(228,49,43,.24) 25%,
+    rgba(0,0,0,.34)     25%, rgba(0,0,0,.34)     50%,
+    rgba(255,255,255,.16) 50%, rgba(255,255,255,.16) 75%,
+    rgba(0,122,61,.28)  75%, rgba(0,122,61,.28)  100%);
+  border-color:rgba(255,255,255,.3);
+  color:var(--texte);
+}
+.nav a.nav-gaza.actif::after{opacity:1;height:2px}
 .nav a.nav-gaza .fl{font-size:1.05em;line-height:1}
-.nav a.nav-gaza .fleche{opacity:.5;transition:transform var(--transition),opacity var(--transition)}
-.nav a.nav-gaza:hover .fleche{opacity:1;transform:translateX(3px)}
 
 @media (max-width:720px){
-  /* Dans le menu burger : item normal, aligné comme les autres */
+  /* Dans le menu burger : item pleine largeur, même teinte */
   .nav a.nav-gaza{
-    margin-left:0;padding-left:14px;
-    border-left:none;border-top:1px solid var(--bord-2);
-    margin-top:6px;padding-top:15px;
+    margin:8px 0 0;justify-content:flex-start;
+    padding:13px 14px;
   }
-  .nav a.nav-gaza .fleche{display:none}
-}
-.solidarite .pourquoi{
-  font-size:14.5px;color:#9BA3AE;line-height:1.7;
-  padding-left:14px;border-left:2px solid rgba(255,255,255,.12);
-  margin-top:16px;
 }
 
 /* Décalage à l'arrivée sur une ancre : sinon le header collant
    recouvre le haut de la section ciblée. */
-#solidarite, #stream, #chiffres, #top, #reglement{
+#stream, #chiffres, #top, #reglement{
   scroll-margin-top:84px;
+}
+
+/* ═══════════ PAGE SOUTIEN GAZA ═══════════
+   Sobriété assumée : pas de néon, pas d'animation, pas de dégradé
+   signature. Le ton tranche volontairement avec le reste du site. */
+.gaza-page{padding:clamp(40px,6vw,76px) 0 clamp(52px,8vw,96px)}
+
+.gaza-tete{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,4vw,44px)}
+.gaza-bande{
+  flex-shrink:0;width:5px;height:clamp(46px,6vw,64px);border-radius:3px;
+  background:linear-gradient(180deg,
+    #000000 0 25%, #FFFFFF 25% 50%, #007A3D 50% 75%, #E4312B 75% 100%);
+}
+.gaza-tete h1{
+  display:flex;align-items:center;gap:13px;flex-wrap:wrap;
+  font-size:clamp(30px,5vw,46px);font-weight:600;
+  letter-spacing:-.025em;line-height:1.1;color:#F5F5FF;
+}
+.gaza-tete h1 .fl{font-size:.92em;line-height:1}
+
+.gaza-corps{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4.5vw,52px);align-items:start}
+.gaza-intro{font-size:17px;line-height:1.75;color:#D6DAE2;max-width:52ch}
+.gaza-pourquoi{
+  font-size:14.5px;color:#9BA3AE;line-height:1.72;margin-top:20px;max-width:56ch;
+  padding-left:15px;border-left:2px solid rgba(255,255,255,.12);
+}
+.gaza-mention{margin-top:20px;font-size:12.5px;color:#6B7280;line-height:1.65}
+
+.gaza-image{margin:0}
+.gaza-image img{
+  width:100%;border-radius:var(--r-m);display:block;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+@media (max-width:860px){
+  .gaza-corps{grid-template-columns:1fr;gap:28px}
+  .gaza-image{order:-1}
 }
