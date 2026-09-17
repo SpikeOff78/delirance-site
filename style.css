@@ -827,3 +827,75 @@ h2.titre{font-size:clamp(27px,4.4vw,40px);font-weight:700;letter-spacing:-.03em;
   .chiffre-case:last-child{border-bottom:none}
   .photo-legende{flex-direction:column;align-items:flex-start;gap:8px}
 }
+
+/* ═══════════ SECTION SOLIDARITÉ ═══════════
+   Volontairement à part : pas de néon, pas de dégradé signature,
+   pas d'animation. Le ton doit trancher avec le reste du site. */
+.solidarite{
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r-l);
+  background:#0D0D12;                    /* légèrement distinct du fond */
+}
+/* Liseré fin aux couleurs du drapeau, en haut */
+.solidarite::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,
+    #000000 0%, #000000 25%,
+    #FFFFFF 25%, #FFFFFF 50%,
+    #007A3D 50%, #007A3D 75%,
+    #E4312B 75%, #E4312B 100%);
+}
+.solidarite-in{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:clamp(24px,4vw,44px);align-items:center;
+  padding:clamp(28px,4.5vw,46px);
+}
+.solidarite h2{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-size:clamp(23px,3.4vw,31px);font-weight:600;
+  letter-spacing:-.02em;line-height:1.2;color:#F5F5FF;
+}
+.solidarite h2 .drapeau{font-size:.9em;line-height:1}
+.solidarite p{
+  color:#B6BCC6;font-size:15.5px;line-height:1.72;
+  margin-top:16px;max-width:52ch;
+}
+.solidarite .source{
+  margin-top:18px;font-size:12.5px;color:#6B7280;line-height:1.6;
+}
+.btn-don{
+  display:inline-flex;align-items:center;gap:9px;margin-top:24px;
+  background:#007A3D;color:#FFFFFF;
+  font-family:'Inter',sans-serif;font-size:15px;font-weight:600;
+  padding:14px 26px;border-radius:var(--r-s);text-decoration:none;
+  border:1px solid rgba(255,255,255,.18);
+  transition:background .2s ease, border-color .2s ease;   /* pas de translation ni de glow */
+}
+.btn-don:hover{background:#078844;border-color:rgba(255,255,255,.34)}
+.btn-don:focus-visible{outline:2px solid #FFFFFF;outline-offset:3px}
+
+.solidarite figure{margin:0}
+.solidarite figure img{
+  width:100%;border-radius:var(--r-m);display:block;
+  border:1px solid rgba(255,255,255,.1);
+}
+.solidarite figcaption{
+  margin-top:11px;font-size:12px;color:#6B7280;line-height:1.55;
+}
+
+/* Ligne discrète dans le pied de page */
+.pied-gaza{
+  display:inline-flex;align-items:center;gap:8px;
+  color:#9CA3AF!important;font-size:13px;
+}
+.pied-gaza:hover{color:#F5F5FF!important}
+.pied-gaza .barre{
+  display:inline-block;width:3px;height:13px;border-radius:2px;
+  background:linear-gradient(180deg,#000 0 25%,#FFF 25% 50%,#007A3D 50% 75%,#E4312B 75% 100%);
+}
+
+@media (max-width:860px){
+  .solidarite-in{grid-template-columns:1fr;gap:26px}
+  .solidarite figure{order:-1}
+}
