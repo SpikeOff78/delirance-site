@@ -901,52 +901,48 @@ h2.titre{font-size:clamp(27px,4.4vw,40px);font-weight:700;letter-spacing:-.03em;
 }
 
 /* ═══════════ ITEM "SOUTIEN GAZA" DANS LA NAVIGATION ═══════════
-   Teinte aux 4 couleurs du drapeau, à très faible opacité : on
-   reconnaît le drapeau sans que ça jure avec le reste du menu. */
+   Le drapeau palestinien complet (3 bandes + triangle), dessiné en SVG :
+   net à toutes les tailles, aucun fichier à charger. */
 .nav a.nav-gaza{
-  position:relative;overflow:hidden;
+  position:relative;
   margin-left:clamp(10px,2vw,22px);
-  display:inline-flex;align-items:center;gap:7px;
+  display:inline-flex;align-items:center;gap:9px;
+  padding-left:13px;padding-right:15px;
   border:1px solid rgba(255,255,255,.16);
   border-radius:var(--r-s);
-  background:linear-gradient(90deg,
-    rgba(228,49,43,.16) 0%,  rgba(228,49,43,.16) 25%,
-    rgba(0,0,0,.30)     25%, rgba(0,0,0,.30)     50%,
-    rgba(255,255,255,.12) 50%, rgba(255,255,255,.12) 75%,
-    rgba(0,122,61,.20)  75%, rgba(0,122,61,.20)  100%);
-  transition:border-color var(--transition), filter var(--transition);
+  background:rgba(255,255,255,.035);
+  transition:border-color var(--transition), background var(--transition);
 }
-/* Fin liseré des 4 couleurs en bas, plus net que le fond */
+/* Le drapeau, en pastille à gauche du texte */
+.nav a.nav-gaza::before{
+  content:"";flex-shrink:0;
+  width:22px;height:14px;border-radius:2px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Crect width='60' height='10' fill='%23000000'/%3E%3Crect y='10' width='60' height='10' fill='%23FFFFFF'/%3E%3Crect y='20' width='60' height='10' fill='%23009639'/%3E%3Cpath d='M0 0 L20 15 L0 30 Z' fill='%23ED2E38'/%3E%3C/svg%3E");
+  background-size:100% 100%;background-repeat:no-repeat;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18);
+}
+/* Fin liseré du drapeau sous le bouton */
 .nav a.nav-gaza::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
-  background:linear-gradient(90deg,
-    #E4312B 0 25%, #000000 25% 50%, #FFFFFF 50% 75%, #007A3D 75% 100%);
-  opacity:.75;
+  content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:2px;
+  border-radius:2px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Crect width='60' height='10' fill='%23000000'/%3E%3Crect y='10' width='60' height='10' fill='%23FFFFFF'/%3E%3Crect y='20' width='60' height='10' fill='%23009639'/%3E%3Cpath d='M0 0 L20 15 L0 30 Z' fill='%23ED2E38'/%3E%3C/svg%3E");
+  background-size:100% 400%;background-position:center;
+  opacity:.9;
 }
 .nav a.nav-gaza:hover{
-  background:linear-gradient(90deg,
-    rgba(228,49,43,.24) 0%,  rgba(228,49,43,.24) 25%,
-    rgba(0,0,0,.34)     25%, rgba(0,0,0,.34)     50%,
-    rgba(255,255,255,.16) 50%, rgba(255,255,255,.16) 75%,
-    rgba(0,122,61,.28)  75%, rgba(0,122,61,.28)  100%);
-  border-color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.075);
+  border-color:rgba(255,255,255,.32);
   color:var(--texte);
 }
-.nav a.nav-gaza.actif::after{opacity:1;height:2px}
-.nav a.nav-gaza .fl{font-size:1.05em;line-height:1}
+.nav a.nav-gaza.actif{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28)}
 
 @media (max-width:720px){
-  /* Dans le menu burger : item pleine largeur, même teinte */
+  /* Dans le menu burger : item pleine largeur */
   .nav a.nav-gaza{
     margin:8px 0 0;justify-content:flex-start;
-    padding:13px 14px;
+    padding:13px 15px;
   }
-}
-
-/* Décalage à l'arrivée sur une ancre : sinon le header collant
-   recouvre le haut de la section ciblée. */
-#stream, #chiffres, #top, #reglement{
-  scroll-margin-top:84px;
+  .nav a.nav-gaza::after{left:15px;right:15px;bottom:0}
 }
 
 /* ═══════════ PAGE SOUTIEN GAZA ═══════════
@@ -977,11 +973,14 @@ h2.titre{font-size:clamp(27px,4.4vw,40px);font-weight:700;letter-spacing:-.03em;
 
 .gaza-image{margin:0}
 .gaza-image img{
-  width:100%;border-radius:var(--r-m);display:block;
+  width:100%;height:auto;              /* height:auto = aucune déformation */
+  max-width:460px;                      /* l'image est carrée : on la borne */
+  border-radius:var(--r-m);display:block;
   border:1px solid rgba(255,255,255,.1);
 }
 
 @media (max-width:860px){
   .gaza-corps{grid-template-columns:1fr;gap:28px}
   .gaza-image{order:-1}
+  .gaza-image img{margin:0 auto}
 }
