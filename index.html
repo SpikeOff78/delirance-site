@@ -49,9 +49,6 @@
       <a href="classement.html">Classement</a>
       <a href="commandes.html">Commandes</a>
       <a href="reseaux.html">Réseaux</a>
-      <a class="nav-gaza" href="gaza.html" aria-label="Soutien Gaza">
-        Soutien Gaza
-      </a>
       <a class="cta" href="https://discord.gg/deliree" target="_blank" rel="noopener">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.1 16.1 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05-.01.07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.4.01-.5.06-.4.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02ZM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12 0-1.17.84-2.12 1.89-2.12 1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
         Rejoindre le Discord
@@ -183,7 +180,35 @@
   <div class="regles" id="regles"></div>
 </section>
 
-<!-- ══════════ 6. REJOINS-NOUS ══════════ -->
+<!-- ══════════ 6. SOLIDARITÉ ══════════
+     Remplace l'ancien item « Soutien Gaza » de la barre de navigation.
+     Bandeau pleine largeur, traité à part : fond légèrement distinct,
+     liseré aux couleurs du drapeau, aucun dégradé violet/or, aucune
+     animation. Le ton tranche volontairement avec le reste du site. -->
+<section class="section page" id="solidarite" style="padding-top:clamp(36px,5vw,68px)">
+  <div class="solidarite reveal">
+    <div class="solidarite-in">
+      <div>
+        <h2><span class="drapeau" role="img" aria-label="Drapeau palestinien">🇵🇸</span> On soutient Gaza</h2>
+        <p>La Délirance se mobilise. Médecins Sans Frontières intervient à Gaza aux côtés du personnel soignant local : prise en charge des blessés, chirurgie, soins des brûlures, soutien aux hôpitaux encore en activité et distribution de matériel médical.</p>
+        <p>L'organisation est financée très majoritairement par des dons privés, ce qui lui permet de décider seule où et comment intervenir. Si tu peux, fais un don. Chaque geste compte.</p>
+        <a class="btn-don" href="gaza.html">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z"/>
+          </svg>
+          En savoir plus et faire un don
+        </a>
+        <p class="source">Le don est versé directement à Médecins Sans Frontières.<br>La Délirance ne collecte ni ne reçoit aucun fonds.</p>
+      </div>
+
+      <figure>
+        <img src="gaza-solidarite.jpg" alt="Un enfant agite un drapeau palestinien à la fenêtre d'un bâtiment endommagé" width="820" height="817" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 7. REJOINS-NOUS ══════════ -->
 <section class="section page" style="padding-top:clamp(36px,5vw,68px)">
   <div class="cta-final reveal">
     <h2 class="grad">Rejoins-nous</h2>
@@ -214,6 +239,10 @@
         <a href="classement.html">Classement</a>
         <a href="commandes.html">Commandes</a>
         <a href="reseaux.html">Réseaux</a>
+        <a class="pied-gaza" href="gaza.html">
+          <span class="barre" aria-hidden="true"></span>
+          Soutien Gaza
+        </a>
       </div>
     </div>
     <div>
@@ -222,10 +251,6 @@
         <a href="https://discord.gg/deliree" target="_blank" rel="noopener">Discord</a>
         <a href="https://www.twitch.tv/dimehdelire" target="_blank" rel="noopener">Twitch</a>
         <a href="https://www.youtube.com/@dimehdelire" target="_blank" rel="noopener">YouTube</a>
-        <a class="pied-gaza" href="https://soutenir.msf.fr/fonds-urgence-gaza/~mon-don" target="_blank" rel="noopener noreferrer">
-          <span class="barre" aria-hidden="true"></span>
-          Soutien à Gaza — faire un don MSF
-        </a>
         <a class="pied-mail" href="mailto:iliaswebpro@gmail.com">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
           Contact
@@ -363,14 +388,16 @@ function rendreTop(membres){
     .map((m,i) => ({
       rang:i+1, pseudo:m.pseudo || 'Membre', xp:m.xp || 0,
       niveau:niveauDepuisXp(m.xp),
-      avatar:m.avatar || avatarDefaut(m.pseudo)
+      /* avatar : URL Discord si elle existe ; repli : filet si le CDN renvoie 404 */
+      avatar:m.avatar || avatarDefaut(m.pseudo),
+      repli:avatarDefaut(m.pseudo)
     }));
 
   const [p1,p2,p3] = enrichi;
   const marche = (j, cl, med) => !j ? '' : `
     <a class="pod-m ${cl}" href="classement.html" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}">
       <span class="pod-med">${med}</span>
-      <img src="${j.avatar}" alt="" loading="lazy" width="76" height="76">
+      <img src="${j.avatar}" data-repli="${j.repli}" alt="" width="76" height="76" decoding="async" referrerpolicy="no-referrer">
       <span>
         <span class="n">${esc(j.pseudo)}</span>
         <span class="lv">Niveau ${j.niveau}</span>
@@ -384,7 +411,7 @@ function rendreTop(membres){
   document.getElementById('suite').innerHTML = enrichi.slice(3).map(j => `
     <a class="suite-l" href="classement.html" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}">
       <span class="r">${j.rang}</span>
-      <img src="${j.avatar}" alt="" loading="lazy" width="30" height="30">
+      <img src="${j.avatar}" data-repli="${j.repli}" alt="" loading="lazy" width="30" height="30" decoding="async" referrerpolicy="no-referrer">
       <span>
         <span class="n">${esc(j.pseudo)}</span>
         <span class="s">Niveau ${j.niveau}</span>

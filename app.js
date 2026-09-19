@@ -15,21 +15,120 @@ const mouvementReduit = () =>
 const niveauDepuisXp = xp => Math.floor(Math.sqrt((xp || 0) / 150));
 const xpPourNiveau   = n  => Math.floor(n * n * 150);
 
-/* Avatar de repli : pastille avec initiale + couleur stable dérivée du pseudo */
+/* ═══════════════════════════════════════════
+   AVATARS — repli propre et systématique
+   ═══════════════════════════════════════════
+
+   Trois cas couverts :
+   1. La base n'a aucune URL (avatar null)  → repli immédiat
+   2. L'URL existe mais le CDN Discord la refuse (le membre a changé
+      ou supprimé son avatar : l'ancien hash renvoie 404)
+      → le gestionnaire délégué plus bas bascule sur le repli
+   3. Le pseudo est inconnu (« Membre » enregistré avant que le bot
+      ne sauvegarde les pseudos) → silhouette, pas une initiale « M »
+      répétée à l'identique sur tous ces membres
+   ═══════════════════════════════════════════ */
+
+/* Pseudos que la base utilise quand elle ne connaît pas encore le membre */
+const PSEUDO_INCONNU = ['membre', 'inconnu', ''];
+
+/* Empreinte stable : le même pseudo donne toujours la même couleur */
+function empreinte(texte){
+  let h = 0;
+  for (let i = 0; i < texte.length; i++) h = (h * 31 + texte.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+/* Première lettre ou chiffre réel du pseudo (ignore emojis et ponctuation) */
+function initialeDe(nom){
+  for (const c of nom) if (/[\p{L}\p{N}]/u.test(c)) return c.toUpperCase();
+  return '';
+}
+
+/* Mélange deux couleurs RVB, f allant de 0 (a) à 1 (b) */
+function melange(a, b, f){
+  const v = (x, y) => Math.round(x + (y - x) * f);
+  return `rgb(${v(a[0],b[0])},${v(a[1],b[1])},${v(a[2],b[2])})`;
+}
+
+/* Rampe de la charte : violet → cyan. Rien ne sort de ces deux teintes,
+   donc aucun repli ne peut jurer avec le reste du site. */
+const RAMPE_HAUT = [[184,69,255], [ 0,229,255]];   /* --violet   → --teal        */
+const RAMPE_BAS  = [[ 61,19,102], [  0, 62, 82]];  /* violet nuit → cyan nuit    */
+const RAMPE_TXT  = [[233,203,255], [198,246,255]]; /* --violet-clair → cyan clair */
+
+/**
+ * Avatar de repli : pastille dégradée violet→cyan avec l'initiale du pseudo,
+ * ou une silhouette quand le pseudo lui-même est inconnu.
+ * Renvoie une data-URI SVG (aucune requête réseau, aucun fichier à héberger).
+ */
 function avatarDefaut(pseudo){
-  const nom = String(pseudo || 'Membre').trim();
-  let initiale = '?';
-  for (const c of nom) { if (/[\p{L}\p{N}]/u.test(c)) { initiale = c.toUpperCase(); break; } }
-  let empreinte = 0;
-  for (let i = 0; i < nom.length; i++) empreinte = (empreinte * 31 + nom.charCodeAt(i)) >>> 0;
-  const t = empreinte % 360;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="hsl(${t} 44% 32%)"/><stop offset="1" stop-color="hsl(${(t+30)%360} 50% 20%)"/>
-</linearGradient></defs><rect width="64" height="64" fill="url(#g)"/>
-<text x="32" y="34" text-anchor="middle" dominant-baseline="central" font-family="Space Grotesk,sans-serif"
-font-size="27" font-weight="700" fill="hsl(${t} 70% 85%)">${initiale}</text></svg>`;
+  const nom = String(pseudo ?? '').trim();
+  const inconnu = PSEUDO_INCONNU.includes(nom.toLowerCase());
+  const initiale = inconnu ? '' : initialeDe(nom);
+
+  /* Position sur la rampe violet→cyan : stable pour un pseudo donné.
+     Les membres inconnus sont tous placés au centre (teinte neutre commune). */
+  const f = inconnu ? 0.5 : (empreinte(nom) % 1000) / 1000;
+
+  const haut = melange(RAMPE_HAUT[0], RAMPE_HAUT[1], f);
+  const bas  = melange(RAMPE_BAS[0],  RAMPE_BAS[1],  f);
+  const txt  = melange(RAMPE_TXT[0],  RAMPE_TXT[1],  f);
+
+  /* Le cœur du visuel : soit l'initiale, soit une silhouette sobre */
+  const centre = initiale
+    ? `<text x="32" y="33" text-anchor="middle" dominant-baseline="central"
+         font-family="Space Grotesk,Segoe UI,sans-serif" font-size="29"
+         font-weight="700" fill="${txt}">${esc(initiale)}</text>`
+    : `<g fill="${txt}" opacity=".72">
+         <circle cx="32" cy="25" r="9.5"/>
+         <path d="M14.5 51c0-9.4 7.8-14.5 17.5-14.5S49.5 41.6 49.5 51Z"/>
+       </g>`;
+
+  const svg =
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<defs>
+<linearGradient id="f" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="${bas}"/><stop offset="1" stop-color="${haut}" stop-opacity=".55"/>
+</linearGradient>
+</defs>
+<rect width="64" height="64" fill="${bas}"/>
+<rect width="64" height="64" fill="url(#f)"/>
+${centre}
+</svg>`;
+
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+/**
+ * Attribut à coller sur chaque <img> d'avatar.
+ * Fournit l'URL réelle si elle existe, et TOUJOURS un repli en réserve.
+ * Usage dans un template : <img ${attrAvatar(membre)} width="88" height="88">
+ */
+function attrAvatar(membre, chargementDiffere = true){
+  const repli = avatarDefaut(membre && membre.pseudo);
+  const src = (membre && membre.avatar) ? membre.avatar : repli;
+  return `src="${esc(src)}" data-repli="${esc(repli)}" alt=""`
+       + (chargementDiffere ? ' loading="lazy"' : '')
+       + ' decoding="async" referrerpolicy="no-referrer"';
+}
+
+/* Gestionnaire unique et délégué : dès qu'une image d'avatar échoue
+   (404 du CDN Discord, hors-ligne, blocage réseau), on bascule sur le repli.
+   `error` ne remonte pas en bulle → on écoute en phase de capture (true).
+   `data-repli-fait` empêche toute boucle si le repli lui-même échouait. */
+function brancherRepliAvatars(){
+  if (document.body && document.body.dataset.repliBranche) return;
+  if (document.body) document.body.dataset.repliBranche = '1';
+
+  document.addEventListener('error', e => {
+    const img = e.target;
+    if (!img || img.tagName !== 'IMG') return;
+    const repli = img.dataset && img.dataset.repli;
+    if (!repli || img.dataset.repliFait) return;
+    img.dataset.repliFait = '1';
+    img.src = repli;
+  }, true);
 }
 
 /* ─── Apparitions au défilement ─── */
@@ -166,6 +265,10 @@ function ajouterGrain(){
 
 /* ─── Initialisation commune ─── */
 function initSite(){
+  /* Repli des avatars : branché en tout premier, avant le moindre rendu,
+     pour qu'aucune image lancée par la page ne puisse échouer sans filet. */
+  brancherRepliAvatars();
+
   /* Header : bordure au défilement */
   const entete = document.getElementById('entete');
   if (entete){
@@ -217,6 +320,10 @@ function initSite(){
   revele();
   compteursAuScroll();
 }
+
+/* Le filet des avatars est posé dès le chargement du script : les pages
+   peuvent injecter des <img> avant DOMContentLoaded sans perdre le repli. */
+brancherRepliAvatars();
 
 if (document.readyState === 'loading')
   document.addEventListener('DOMContentLoaded', initSite);
