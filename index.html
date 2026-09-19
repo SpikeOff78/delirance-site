@@ -378,7 +378,7 @@ function squelettes(){
   document.getElementById('pod3').innerHTML =
     [1,2,3].map(() => `<div class="pod-m"><div class="skel" style="width:58px;height:58px;border-radius:50%;margin:0 auto 11px"></div><div class="skel" style="height:13px;width:70%;margin:0 auto 7px"></div><div class="skel" style="height:11px;width:45%;margin:0 auto"></div></div>`).join('');
   document.getElementById('suite').innerHTML =
-    Array.from({length:5}).map(() => `<div class="suite-l"><div class="skel" style="height:12px"></div><div class="skel" style="width:30px;height:30px;border-radius:50%"></div><div class="skel" style="height:12px"></div><div class="skel" style="height:12px;width:54px"></div></div>`).join('');
+    Array.from({length:5}).map(() => `<div class="suite-l cadre"><div class="skel" style="height:12px"></div><div class="skel" style="width:30px;height:30px;border-radius:50%"></div><div class="skel" style="height:12px"></div><div class="skel" style="height:12px;width:54px"></div></div>`).join('');
 }
 
 function rendreTop(membres){
@@ -394,9 +394,12 @@ function rendreTop(membres){
     }));
 
   const [p1,p2,p3] = enrichi;
+  /* Direction B : même langage que la page Classement — équerres, trame,
+     référence de rang. Les 3 marches sont des cartes de membre. */
+  const teinte = {1:'ref-or', 2:'ref-argent', 3:'ref-bronze'};
   const marche = (j, cl, med) => !j ? '' : `
-    <a class="pod-m ${cl}" href="classement.html" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}">
-      <span class="pod-med">${med}</span>
+    <a class="pod-m ${cl} cadre trame" href="classement.html" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}">
+      <span class="ref ${teinte[med]}">Rang N° ${med}</span>
       <img src="${j.avatar}" data-repli="${j.repli}" alt="" width="76" height="76" decoding="async" referrerpolicy="no-referrer">
       <span>
         <span class="n">${esc(j.pseudo)}</span>
@@ -409,7 +412,7 @@ function rendreTop(membres){
     marche(p2,'p2',2) + marche(p1,'p1',1) + marche(p3,'p3',3);
 
   document.getElementById('suite').innerHTML = enrichi.slice(3).map(j => `
-    <a class="suite-l" href="classement.html" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}">
+    <a class="suite-l cadre" href="classement.html" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}">
       <span class="r">${j.rang}</span>
       <img src="${j.avatar}" data-repli="${j.repli}" alt="" loading="lazy" width="30" height="30" decoding="async" referrerpolicy="no-referrer">
       <span>

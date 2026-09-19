@@ -18,7 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-dense">
 <div class="ambiance"></div>
 
 <header class="entete" id="entete">
@@ -59,9 +59,15 @@
         <h2 class="titre" style="font-size:22px">Top membres</h2>
         <span class="compteur" id="compteur"></span>
       </div>
-      <div class="recherche">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="search" id="recherche" placeholder="Chercher un membre" aria-label="Chercher un membre">
+      <!-- B4 : le champ affiche son raccourci clavier tant qu'il est vide,
+           et un bouton d'effacement dès qu'on a tapé quelque chose. -->
+      <div class="recherche cadre" id="boite-recherche">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="recherche" placeholder="Chercher un membre" aria-label="Chercher un membre" autocomplete="off" spellcheck="false">
+        <span class="rac" aria-hidden="true">/</span>
+        <button class="vider" id="vider" type="button" aria-label="Effacer la recherche">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
     </div>
 
@@ -73,7 +79,7 @@
 
 <!-- Modal profil -->
 <div class="voile" id="voile" role="dialog" aria-modal="true" aria-labelledby="profil-nom">
-  <div class="profil" id="profil"></div>
+  <div class="profil cadre trame" id="profil"></div>
 </div>
 
 <footer class="pied">
@@ -155,11 +161,12 @@ function rendrePodium(trois){
   const bloc = document.getElementById('podium');
   if(trois.length < 3){ bloc.innerHTML = ''; bloc.className = ''; return; }
   const [p1,p2,p3] = trois;
-  const couronne = '<svg class="couronne" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7l4 3.5L12 4l5 6.5L21 7l-1.6 11H4.6L3 7Z"/></svg>';
-  const marche = (j,cl,med,roi) => `
-    <article class="marche ${cl} reveal" data-rang="${j.rang}" tabindex="0" role="button" aria-label="Profil de ${esc(j.pseudo)}">
-      ${roi ? couronne : ''}
-      <div class="medaille">${med}</div>
+  /* Direction B : plus de couronne. Le rang est écrit en référence,
+     la carte est encadrée d'équerres et porte la trame de balayage. */
+  const teinte = {1:'ref-or', 2:'ref-argent', 3:'ref-bronze'};
+  const marche = (j,cl,med) => `
+    <article class="marche ${cl} cadre trame reveal" data-rang="${j.rang}" tabindex="0" role="button" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}">
+      <div class="ref ${teinte[med]}">Rang N° ${med}</div>
       <div class="face"><img src="${j.avatar}" data-repli="${j.repli}" alt="" width="88" height="88" decoding="async" referrerpolicy="no-referrer"></div>
       <div class="bloc-nom">
         <div class="pseudo">${esc(j.pseudo)}</div>
@@ -169,12 +176,12 @@ function rendrePodium(trois){
       <div class="socle"></div>
     </article>`;
   bloc.className = 'podium';
-  bloc.innerHTML = marche(p2,'argent',2,false) + marche(p1,'or',1,true) + marche(p3,'bronze',3,false);
+  bloc.innerHTML = marche(p2,'argent',2) + marche(p1,'or',1) + marche(p3,'bronze',3);
 }
 
 function rendreListe(reste){
   document.getElementById('liste').innerHTML = reste.map(j => `
-    <article class="ligne reveal" data-rang="${j.rang}" tabindex="0" role="button" aria-label="Profil de ${esc(j.pseudo)}">
+    <article class="ligne cadre reveal" data-rang="${j.rang}" tabindex="0" role="button" aria-label="Profil de ${esc(j.pseudo)}, rang ${j.rang}, niveau ${j.niveau}">
       <div class="rang">${j.rang}</div>
       <img src="${j.avatar}" data-repli="${j.repli}" alt="" loading="lazy" width="38" height="38" decoding="async" referrerpolicy="no-referrer">
       <div class="bloc-nom">
@@ -248,14 +255,20 @@ function ouvrirProfil(rang){
   const premier = TOUS[0];
   const ecart = premier && premier.rang !== j.rang ? premier.xp - j.xp : 0;
 
+  /* B3 : la fiche profil EST la carte de membre — équerres, référence,
+     trame et numéro de série en bas, comme sur les cartes du bot. */
+  const teinte = j.rang === 1 ? 'ref-or' : j.rang === 2 ? 'ref-argent' : j.rang === 3 ? 'ref-bronze' : 'ref-teal';
+
   document.getElementById('profil').innerHTML = `
-    <div class="profil-haut">
-      <button class="profil-fermer" id="fermer" aria-label="Fermer">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <div class="profil-haut trame">
+      <button class="profil-fermer" id="fermer" aria-label="Fermer la fiche">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
+      <div class="profil-ref"><span class="ref ${teinte}">Rang N° ${j.rang}</span></div>
       <img src="${j.avatar}" data-repli="${j.repli}" alt="" width="88" height="88" decoding="async" referrerpolicy="no-referrer">
       <div class="profil-nom" id="profil-nom">${esc(j.pseudo)}</div>
-      <div class="profil-rang">Rang #${j.rang} · Niveau ${j.niveau}</div>
+      <div class="profil-rang">Niveau ${j.niveau}</div>
+      <div class="profil-serie" aria-hidden="true">LA DÉLIRANCE · N° ${String(j.rang).padStart(3,'0')}</div>
     </div>
     <div class="profil-corps">
       <div class="profil-barre">
@@ -271,7 +284,7 @@ function ouvrirProfil(rang){
         <div class="profil-case"><div class="v mono">${j.rang === 1 ? '—' : fmt(ecart)}</div><div class="l">${j.rang === 1 ? 'En tête du classement' : 'XP derrière le 1er'}</div></div>
       </div>
       <div class="badges">${badgesDe(j).map(b => `<span class="badge" style="--bt:${b.c}">${esc(b.t)}</span>`).join('')}</div>
-      <p class="profil-note">Le nombre de messages et les heures de vocal seront affichés ici<br>dès que le bot les enregistrera.</p>
+      <p class="profil-note">Le nombre de messages et les heures de vocal seront affichés ici dès que le bot les enregistrera.</p>
     </div>`;
 
   voile.classList.add('ouvert');
@@ -282,11 +295,22 @@ function ouvrirProfil(rang){
   });
   document.getElementById('fermer').addEventListener('click', fermerProfil);
   document.getElementById('fermer').focus();
+
+  /* B9 : sans piège à focus, la tabulation s'échappe derrière la fiche
+     et la modale devient inutilisable au clavier. */
+  libererFocus = piegerFocus(document.getElementById('profil'));
 }
+
+/* Élément qui avait le focus avant l'ouverture : on le lui rend à la fermeture */
+let declencheur = null;
+let libererFocus = null;
 
 function fermerProfil(){
   voile.classList.remove('ouvert');
   document.body.style.overflow = '';
+  if (libererFocus){ libererFocus(); libererFocus = null; }
+  if (declencheur && document.contains(declencheur)) declencheur.focus();
+  declencheur = null;
 }
 
 voile.addEventListener('click', e => { if(e.target === voile) fermerProfil(); });
@@ -296,18 +320,49 @@ function brancherClics(){
   document.querySelectorAll('[data-rang]').forEach(el => {
     if(el.dataset.branche) return;
     el.dataset.branche = '1';
-    el.addEventListener('click', () => ouvrirProfil(Number(el.dataset.rang)));
+    el.addEventListener('click', () => { declencheur = el; ouvrirProfil(Number(el.dataset.rang)); });
     el.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); ouvrirProfil(Number(el.dataset.rang)); }
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault(); declencheur = el; ouvrirProfil(Number(el.dataset.rang));
+      }
     });
   });
 }
 
-/* ─── Recherche ─── */
+/* ─── B4 · Recherche ───
+   Insensible aux accents ET à la casse : « kais » trouve « Kaïs »,
+   indispensable ici où beaucoup de pseudos sont accentués ou stylisés. */
 const champ = document.getElementById('recherche');
-champ.addEventListener('input', () => {
-  const t = champ.value.trim().toLowerCase();
-  afficher(t ? TOUS.filter(j => j.pseudo.toLowerCase().includes(t)) : TOUS, t);
+const boite = document.getElementById('boite-recherche');
+const vider = document.getElementById('vider');
+
+function chercher(){
+  const brut = champ.value.trim();
+  const t = normaliser(brut);
+  boite.classList.toggle('rempli', brut.length > 0);
+  afficher(t ? TOUS.filter(j => normaliser(j.pseudo).includes(t)) : TOUS, brut);
+}
+
+champ.addEventListener('input', chercher);
+
+vider.addEventListener('click', () => {
+  champ.value = '';
+  chercher();
+  champ.focus();
+});
+
+/* Échap vide le champ ; « / » y amène le curseur depuis n'importe où */
+champ.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && champ.value){ e.preventDefault(); champ.value = ''; chercher(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+  const a = document.activeElement;
+  if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) return;
+  if (voile.classList.contains('ouvert')) return;
+  e.preventDefault();
+  champ.focus();
+  champ.select();
 });
 
 /* ─── Chargement ─── */

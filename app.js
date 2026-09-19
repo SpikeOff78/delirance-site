@@ -198,22 +198,92 @@ function toast(message, duree = 2600){
   }, duree);
 }
 
-/* ─── Décor : quelques points scintillants ─── */
-function semerEtoiles(nb = 14){
+/* ═══════════════════════════════════════════
+   B6 — FOND CONSTELLATION
+   ═══════════════════════════════════════════
+   Réseau d'étoiles reliées, repris des cartes du bot.
+   Dessiné UNE SEULE FOIS en SVG au chargement, puis plus aucun calcul :
+   la dérive est une animation CSS de `transform`, donc prise en charge
+   par le compositeur (pas de reflow, pas de JS par image).
+   L'opacité est plafonnée côté CSS (12 %, 8 % sur les pages denses). */
+function fondConstellation(){
+  if (document.querySelector('.constellation')) return;
   if (mouvementReduit()) return;
-  const frag = document.createDocumentFragment();
-  for (let i = 0; i < nb; i++){
-    const e = document.createElement('div');
-    e.className = 'etoile';
-    e.style.left = Math.random() * 100 + 'vw';
-    e.style.top = Math.random() * 100 + 'vh';
-    e.style.animationDelay = (Math.random() * 9).toFixed(1) + 's';
-    if (Math.random() > .65) e.style.background = 'var(--teal)';
-    frag.appendChild(e);
+
+  /* Densité proportionnelle à la surface, bornée : une petite fenêtre
+     ne doit pas être saturée, un grand écran ne doit pas être vide. */
+  const aire = Math.max(1, window.innerWidth * window.innerHeight);
+  const nb = Math.round(Math.min(58, Math.max(18, aire / 26000)));
+
+  const L = 1000, H = 1000;          /* repère interne, étiré par le CSS */
+  const LIEN = 190;                  /* distance max pour relier 2 points */
+
+  /* Générateur déterministe : le motif est le même à chaque visite,
+     il fait partie de l'identité et ne doit pas gigoter d'une page à l'autre. */
+  let graine = 20260919;
+  const alea = () => (graine = (graine * 1103515245 + 12345) % 2147483648) / 2147483648;
+
+  const pts = Array.from({ length: nb }, () => ({
+    x: alea() * L, y: alea() * H,
+    r: 1 + alea() * 2.2,
+    teal: alea() > 0.72
+  }));
+
+  let d = '';
+  /* Les liens d'abord : ils passent sous les points */
+  for (let i = 0; i < pts.length; i++){
+    for (let j = i + 1; j < pts.length; j++){
+      const dist = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+      if (dist >= LIEN) continue;
+      const a = (1 - dist / LIEN) * 0.5;
+      d += `<line x1="${pts[i].x.toFixed(1)}" y1="${pts[i].y.toFixed(1)}"`
+         + ` x2="${pts[j].x.toFixed(1)}" y2="${pts[j].y.toFixed(1)}"`
+         + ` stroke="#D89BFF" stroke-opacity="${a.toFixed(2)}" stroke-width="1"/>`;
+    }
   }
-  document.body.appendChild(frag);
+  for (const p of pts){
+    d += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}"`
+       + ` fill="${p.teal ? '#00E5FF' : '#D89BFF'}"/>`;
+  }
+
+  const el = document.createElement('div');
+  el.className = 'constellation';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${L} ${H}"
+    preserveAspectRatio="xMidYMid slice" width="100%" height="100%">${d}</svg>`;
+  document.body.appendChild(el);
 }
 
+/* ═══════════════════════════════════════════
+   B9 — PIÈGE À FOCUS POUR LES FENÊTRES MODALES
+   ═══════════════════════════════════════════
+   Sans ça, la tabulation sort de la fiche profil et navigue la page
+   qui se trouve derrière : la modale est inutilisable au clavier. */
+function piegerFocus(conteneur){
+  const selecteur = 'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
+  /* getClientRects() plutôt que offsetParent : ce dernier vaut null dès qu'un
+     ancêtre est en position:fixed, ce qui est le cas du voile de la modale —
+     le piège ne se serait jamais déclenché. */
+  const visible = el => el.getClientRects().length > 0;
+  const surTab = e => {
+    if (e.key !== 'Tab') return;
+    const f = [...conteneur.querySelectorAll(selecteur)].filter(visible);
+    if (!f.length){ e.preventDefault(); return; }
+    const premier = f[0], dernier = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === premier){ e.preventDefault(); dernier.focus(); }
+    else if (!e.shiftKey && document.activeElement === dernier){ e.preventDefault(); premier.focus(); }
+  };
+  conteneur.addEventListener('keydown', surTab);
+  return () => conteneur.removeEventListener('keydown', surTab);
+}
+
+/* Comparaison de texte insensible aux accents ET à la casse :
+   « kais » doit trouver « Kaïs », « elire » doit trouver « Délirance ». */
+function normaliser(s){
+  return String(s ?? '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase();
+}
 
 /* ─── Curseur : halo qui suit la souris (souris uniquement) ─── */
 function curseurPerso(){
@@ -315,8 +385,8 @@ function initSite(){
   }
 
   ajouterGrain();
+  fondConstellation();   /* B6 — remplace les points épars par un vrai réseau */
   curseurPerso();
-  semerEtoiles();
   revele();
   compteursAuScroll();
 }

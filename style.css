@@ -26,7 +26,7 @@
   --bord-vif:rgba(184,69,255,.45);
   --texte:#F5F5FF;
   --texte-2:#9CA3AF;
-  --texte-3:#6B7280;
+  --texte-3:#828B9C;      /* B9 : #6B7280 plafonnait a 4.09 — sous AA. Meme teinte, eclaircie : 4.55 mini */
 
   --r-s:10px; --r-m:16px; --r-l:24px; --r-xl:32px;
   --ombre:0 20px 50px -22px rgba(0,0,0,.92);
@@ -67,12 +67,6 @@ a{color:inherit}
   -webkit-mask-image:radial-gradient(78% 58% at 50% 0%,#000,transparent 76%);
   mask-image:radial-gradient(78% 58% at 50% 0%,#000,transparent 76%);
 }
-.etoile{
-  position:fixed;width:2px;height:2px;border-radius:50%;background:var(--violet-clair);
-  pointer-events:none;z-index:0;opacity:0;animation:scintille 9s ease-in-out infinite;
-}
-@keyframes scintille{0%,100%{opacity:0;transform:translateY(0)}50%{opacity:.5;transform:translateY(-14px)}}
-
 /* ─── Navigation ─── */
 .entete{
   position:sticky;top:0;z-index:60;
@@ -458,14 +452,27 @@ h2.titre{font-size:clamp(27px,4.4vw,40px);font-weight:700;letter-spacing:-.03em;
 .voile{
   position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:20px;
   background:rgba(4,5,9,.8);backdrop-filter:blur(8px);
-  opacity:0;visibility:hidden;transition:var(--transition);
+  opacity:0;visibility:hidden;
+  /* B9 : `visibility` ne doit PAS être interpolée. Sinon elle reste
+     « hidden » pendant toute la transition, et le focus() posé sur le
+     bouton de fermeture à l'ouverture est purement ignoré — la fiche
+     n'était donc jamais atteignable au clavier. Ici : bascule immédiate
+     à l'ouverture, retardée à la fermeture pour laisser le fondu se voir. */
+  transition:opacity var(--transition), visibility 0s linear .24s;
 }
-.voile.ouvert{opacity:1;visibility:visible}
+.voile.ouvert{
+  opacity:1;visibility:visible;
+  transition:opacity var(--transition), visibility 0s;
+}
 .profil{
   width:min(430px,100%);border-radius:var(--r-xl);overflow:hidden;position:relative;
   background:linear-gradient(168deg,var(--surface-2),var(--nuit-2));
   border:1px solid var(--bord-vif);box-shadow:var(--ombre-2);
-  transform:translateY(16px) scale(.97);transition:var(--transition);
+  transform:translateY(16px) scale(.97);
+  /* `transition:var(--transition)` valait `all` : la visibility HÉRITÉE du
+     voile était donc interpolée ici aussi, et le bouton de fermeture restait
+     invisible — donc non focusable — pendant 240 ms. On nomme les propriétés. */
+  transition:transform var(--transition), opacity var(--transition);
 }
 .voile.ouvert .profil{transform:none}
 .profil-haut{padding:30px 26px 22px;text-align:center;position:relative;background:radial-gradient(80% 100% at 50% 0%,rgba(184,69,255,.18),transparent 70%)}
@@ -940,4 +947,306 @@ h2.titre{font-size:clamp(27px,4.4vw,40px);font-weight:700;letter-spacing:-.03em;
   .gaza-corps{grid-template-columns:1fr;gap:28px}
   .gaza-image{order:-1}
   .gaza-image img{margin:0 auto}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LANGAGE « CARTE DE MEMBRE »  (direction B validée)
+   ═══════════════════════════════════════════════════════════════════
+   Le site reprend le vocabulaire visuel des cartes générées par le bot
+   Discord : équerres aux quatre coins, numéro de référence en petites
+   capitales espacées, fine trame de balayage. Un membre qui voit une
+   carte de bienvenue sur Discord retrouve la même grammaire ici.
+
+   Trois primitives réutilisables, aucune dépendance, aucun fichier :
+     .cadre  → les équerres (8 dégradés dans UN pseudo-élément)
+     .ref    → l'étiquette de référence monospacée
+     .trame  → les lignes de balayage
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{
+  --eq-couleur:rgba(255,255,255,.22);   /* teinte par défaut des équerres */
+  --eq-long:14px;                        /* longueur d'une branche        */
+  --eq-ep:1.5px;                         /* épaisseur du trait            */
+  --eq-marge:9px;                        /* retrait par rapport au bord   */
+}
+
+/* ─── Équerres aux 4 coins ───────────────────────────────────────────
+   Huit dégradés plats dans un seul pseudo-élément : deux branches par
+   coin. Zéro nœud DOM ajouté, zéro requête, se colore par variable. */
+.cadre{position:relative}
+.cadre::before{
+  content:"";position:absolute;inset:var(--eq-marge);
+  pointer-events:none;z-index:2;
+  background-image:
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur)),
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur)),
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur)),
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur));
+  background-repeat:no-repeat;
+  background-size:
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep),   /* haut gauche  */
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep),   /* haut droit   */
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep),   /* bas gauche   */
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep);   /* bas droit    */
+  background-position:
+    left top, left top,
+    right top, right top,
+    left bottom, left bottom,
+    right bottom, right bottom;
+  transition:opacity var(--transition), inset var(--transition);
+}
+
+/* ─── Étiquette de référence ─────────────────────────────────────────
+   « RANG N° 1 », « N° 004 · COMMANDES »… Toujours en capitales,
+   très espacée, jamais plus de quelques caractères. */
+.ref{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Space Grotesk',ui-monospace,monospace;
+  font-size:10px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--texte-3);
+  white-space:nowrap;
+}
+.ref::before{
+  content:"";width:13px;height:var(--eq-ep);flex-shrink:0;border-radius:2px;
+  background:currentColor;opacity:.55;
+}
+.ref-or{color:var(--or)}
+.ref-argent{color:var(--argent)}
+.ref-bronze{color:var(--bronze)}
+.ref-teal{color:var(--teal)}
+
+/* ─── Trame de balayage ──────────────────────────────────────────────
+   Lignes horizontales de 1 px tous les 4 px, à peine perceptibles.
+   Posée en fond de carte, elle donne la texture « écran » des cartes
+   du bot sans alourdir la lecture. */
+.trame{position:relative}
+.trame::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+  border-radius:inherit;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px);
+}
+
+/* ═══════════ B5 · BARRE DE NAVIGATION ═══════════
+   Le lien actif n'est plus souligné : il est encadré d'équerres,
+   comme une case sélectionnée sur une carte. */
+.nav a.actif::after{display:none}          /* on retire l'ancien soulignement */
+.nav a.actif{
+  --eq-couleur:rgba(0,229,255,.55);
+  --eq-long:9px; --eq-ep:1.4px; --eq-marge:2px;
+  color:var(--texte);
+}
+.nav a.actif::before{
+  content:"";position:absolute;inset:var(--eq-marge);
+  pointer-events:none;
+  background-image:
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur)),
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur)),
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur)),
+    linear-gradient(var(--eq-couleur),var(--eq-couleur)),linear-gradient(var(--eq-couleur),var(--eq-couleur));
+  background-repeat:no-repeat;
+  background-size:
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep),
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep),
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep),
+    var(--eq-ep) var(--eq-long), var(--eq-long) var(--eq-ep);
+  background-position:
+    left top,left top, right top,right top,
+    left bottom,left bottom, right bottom,right bottom;
+}
+/* L'en-tête gagne la même trame que les cartes, deux fois plus fine */
+.entete::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 5px);
+}
+.entete{position:sticky;overflow:hidden}
+.entete-in{position:relative;z-index:1}
+
+/* ═══════════ B2 · PODIUM ═══════════ */
+.marche{--eq-couleur:rgba(255,255,255,.16)}
+.marche.or     {--eq-couleur:rgba(255,197,61,.6)}
+.marche.argent {--eq-couleur:rgba(205,214,224,.45)}
+.marche.bronze {--eq-couleur:rgba(208,138,92,.5)}
+.marche:hover  {--eq-marge:6px}             /* les équerres s'écartent au survol */
+
+/* La couronne disparaît : le rang est écrit, comme sur une carte */
+.couronne{display:none}
+.marche .ref,.pod-m .ref{display:flex;justify-content:center}
+.marche .ref{margin-bottom:14px}
+.marche.or .ref{margin-bottom:16px}
+
+/* La médaille ronde devient un repère d'angle discret.
+   On neutralise explicitement left/transform/display hérités de la
+   pastille ronde d'origine, sinon elle reste centrée en haut. */
+.marche .medaille{
+  position:absolute;top:9px;right:13px;left:auto;transform:none;z-index:3;
+  width:auto;height:auto;min-width:0;display:block;
+  border-radius:0;background:none;border:0;box-shadow:none;
+  font-family:'Space Grotesk',ui-monospace,monospace;
+  font-size:11px;font-weight:700;letter-spacing:.12em;line-height:1;
+  color:var(--eq-couleur);
+}
+.or .medaille,.argent .medaille,.bronze .medaille{background:none}
+
+/* ═══════════ B2 · LIGNES DU CLASSEMENT ═══════════ */
+.ligne{--eq-couleur:rgba(255,255,255,.1);--eq-long:9px;--eq-marge:5px}
+.ligne::before{opacity:0}                    /* équerres révélées au survol/focus */
+.ligne:hover::before,
+.ligne:focus-visible::before{opacity:1}
+.ligne .rang{
+  font-variant-numeric:tabular-nums;letter-spacing:.06em;
+}
+.ligne:hover{transform:translateX(3px)}      /* B7 : 5px -> 3px, moins brusque */
+
+/* ═══════════ B3 · MODAL PROFIL ═══════════
+   C'est LA carte de membre : équerres, référence, trame, le tout. */
+.profil{--eq-couleur:rgba(184,69,255,.42);--eq-long:20px;--eq-marge:11px}
+.profil-haut{position:relative}
+.profil-ref{
+  display:flex;justify-content:center;margin-bottom:16px;
+}
+.profil-serie{
+  margin-top:14px;                       /* dans le flux : plus de chevauchement */
+  font-family:'Space Grotesk',ui-monospace,monospace;
+  font-size:9.5px;font-weight:600;letter-spacing:.28em;
+  color:var(--texte-3);text-align:center;opacity:.9;
+}
+
+/* ═══════════ B1 · TÊTES DE SECTION ═══════════
+   Chaque section porte son numéro de référence, comme une planche. */
+.oeil{font-family:'Space Grotesk',ui-monospace,monospace;letter-spacing:.2em}
+
+/* ═══════════ B6 · FOND CONSTELLATION ═══════════
+   Réseau d'étoiles reliées, dessiné une seule fois en SVG au chargement.
+   Opacité plafonnée à 12 % : présent, jamais dominant sur les pages
+   denses. La dérive est une simple translation confiée au compositeur
+   (transform uniquement), donc quasi gratuite en CPU. */
+.constellation{
+  position:fixed;inset:-14% -14% -14% -14%;
+  z-index:0;pointer-events:none;
+  opacity:.12;                               /* plafond demandé : 10-15 % */
+  will-change:transform;
+  animation:derive 190s linear infinite alternate;
+}
+@keyframes derive{
+  from{transform:translate3d(-1.6%, -1.1%, 0)}
+  to  {transform:translate3d( 1.6%,  1.1%, 0)}
+}
+/* Sur les pages denses (classement, commandes) on descend encore */
+body.page-dense .constellation{opacity:.08}
+
+/* ═══════════ B9 · MOUVEMENT RÉDUIT ═══════════
+   Une seule règle qui neutralise tout le mouvement du site. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+  .constellation{animation:none;transform:none}
+  .marche:hover,.ligne:hover,.cta:hover{transform:none}
+}
+
+/* ═══════════ B7 · ÉTATS DE FOCUS ET D'ACTIVATION ═══════════ */
+.ligne:focus-visible,.marche:focus-visible{
+  outline:2px solid var(--teal);outline-offset:3px;
+}
+.recherche input:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.plus:active,.btn:active,.cta:active{transform:translateY(1px)}
+
+/* ═══════════ B4 · RECHERCHE ═══════════ */
+.recherche{--eq-couleur:rgba(0,229,255,.4);--eq-long:8px;--eq-marge:3px}
+.recherche::before{opacity:0;transition:opacity var(--transition)}
+.recherche:focus-within::before{opacity:1}
+.recherche input{padding-right:70px}         /* place pour le raccourci et l'effacement */
+/* Raccourci clavier affiché tant que le champ est vide */
+.rac{
+  position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  font-family:'Space Grotesk',ui-monospace,monospace;
+  font-size:10.5px;font-weight:600;color:var(--texte-3);
+  border:1px solid var(--bord-2);border-radius:5px;padding:2px 6px;
+  pointer-events:none;transition:opacity var(--transition);
+}
+.recherche.rempli .rac{opacity:0}
+/* Bouton d'effacement, visible seulement quand il y a du texte */
+.vider{
+  position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;display:none;place-items:center;
+  background:none;border:0;border-radius:50%;cursor:pointer;
+  color:var(--texte-3);transition:var(--transition);
+}
+.recherche.rempli .vider{display:grid}
+.vider:hover{color:var(--texte);background:rgba(255,255,255,.07)}
+
+@media (max-width:720px){
+  /* B8 : sur mobile les équerres se resserrent, sinon elles mangent la carte */
+  .cadre{--eq-long:11px;--eq-marge:7px}
+  .marche .medaille{top:8px;right:9px;font-size:10px}
+}
+
+/* ═══════════ B1 · PODIUM DE L'ACCUEIL ═══════════
+   Mêmes équerres et mêmes références que la page Classement,
+   pour que les deux podiums se lisent comme un seul objet. */
+.pod-m{--eq-couleur:rgba(255,255,255,.16)}
+.pod-m.p1{--eq-couleur:rgba(255,197,61,.6)}
+.pod-m.p2{--eq-couleur:rgba(205,214,224,.45)}
+.pod-m.p3{--eq-couleur:rgba(208,138,92,.5)}
+.pod-m:hover{--eq-marge:6px;transform:translateY(-4px)}
+.pod-m .ref{margin-bottom:11px}
+
+/* La pastille numérotée se range dans l'angle, comme sur le podium complet */
+.pod-med{
+  position:absolute;top:9px;right:11px;left:auto;transform:none;display:block;
+  width:auto;height:auto;min-width:0;border-radius:0;background:none!important;border:0;
+  font-family:'Space Grotesk',ui-monospace,monospace;
+  font-size:10.5px;font-weight:700;letter-spacing:.12em;line-height:1;
+  color:var(--eq-couleur);
+}
+
+/* Les lignes 4-10 reçoivent les équerres au survol, comme le classement */
+.suite-l{--eq-couleur:rgba(255,255,255,.1);--eq-long:9px;--eq-marge:5px}
+.suite-l::before{opacity:0}
+.suite-l:hover::before,.suite-l:focus-visible::before{opacity:1}
+
+/* ═══════════ B1 · CORRECTION DE COHÉRENCE — LIBELLÉS DE L'ACCUEIL ═══════════
+   Défaut préexistant, visible sur le site en ligne : dans le podium et le
+   top 10 de l'accueil, pseudo / niveau / XP sont des <span> jamais passés
+   en display:block. Ils se suivaient donc sur une seule ligne, et comme le
+   conteneur est un <a> sans text-decoration:none, tout était souligné.
+   La page Classement n'avait pas le problème (ce sont des <div>), d'où
+   l'incohérence entre les deux podiums. */
+.pod-m,.suite-l{text-decoration:none}
+.pod-m .n,.pod-m .lv,.pod-m .x{display:block}
+.suite-l .n,.suite-l .s{display:block}
+.suite-l .r,.suite-l .x{white-space:nowrap}
+
+/* Le pseudo peut être long : on le tronque proprement au lieu de pousser
+   la carte. min-width:0 est indispensable dans une grille/flex. */
+.pod-m > span,.suite-l > span{min-width:0}
+.pod-m .n,.suite-l .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ═══════════ B8 · PODIUM EN LIGNE SOUS 720 px ═══════════
+   Sous 720 px, .marche passe en grille horizontale. La référence de rang
+   ne doit PAS occuper une colonne — elle écraserait le pseudo (« F… ») et
+   ferait passer « Niveau 30 » sur deux lignes. Elle devient un bandeau
+   pleine largeur au-dessus, comme l'en-tête d'une carte. */
+@media (max-width:720px){
+  .marche{grid-template-columns:auto minmax(0,1fr) auto}
+  .marche .ref{
+    grid-column:1 / -1;
+    justify-content:flex-start;
+    margin:0 0 2px;
+  }
+  .marche .bloc-nom{min-width:0}
+  .marche .niv,.marche .xp{white-space:nowrap}
+  .marche .pseudo{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+
+/* ═══════════ B1/B8 · LIGNES DU CLASSEMENT SOUS 440 px ═══════════
+   Le niveau était masqué ici alors qu'il reste affiché dans le top 10 de
+   l'accueil : les deux listes ne racontaient pas la même chose. On le
+   réaffiche et on remet l'XP sur la même ligne, en 4e colonne, plutôt
+   que de l'empiler dessous — la hauteur de ligne ne bouge quasiment pas. */
+@media (max-width:440px){
+  .ligne{grid-template-columns:26px 34px minmax(0,1fr) auto;row-gap:0;gap:10px}
+  .ligne .sous-l{display:block;font-size:11.5px}
+  .ligne .total{grid-column:4;align-self:center;text-align:right;font-size:13px}
 }
